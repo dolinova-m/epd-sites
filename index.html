@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Материалы по ЭПД — Платформа ЭПД</title>
+<style>
+  :root {
+    --ground: #f6f8fa;
+    --surface: #ffffff;
+    --ink: #1e2b38;
+    --muted: #6b7886;
+    --line: #dde3ea;
+    --accent: #f0a03a;
+    --link: #1f63a0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 20px 64px;
+    background: var(--ground);
+    color: var(--ink);
+    font: 16px/1.55 "Golos Text", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .lead { color: var(--muted); margin: 0 0 32px; }
+  .card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card:hover { border-color: #c8d4e0; border-left-color: var(--accent); }
+  .card b { display: block; font-size: 18px; color: var(--link); margin-bottom: 4px; }
+  .card span { color: var(--muted); font-size: 15px; }
+  footer { margin-top: 32px; color: var(--muted); font-size: 14px; }
+  footer a { color: var(--link); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Материалы по ЭПД</h1>
+  <p class="lead">Инструкции и калькулятор «Платформы ЭПД» — открываются в браузере, ничего устанавливать не нужно.</p>
+
+  <a class="card" href="epd-perevozchiki/">
+    <b>Методичка для перевозчиков</b>
+    <span>Переход на ЭПД по двум путям: ИП за рулём и перевозчик с наёмными водителями.</span>
+  </a>
+
+  <a class="card" href="epd-instrukciya/">
+    <b>Кто что подписывает в ЭПД</b>
+    <span>По каждой роли: какие документы, кто за что платит, какая подпись нужна.</span>
+  </a>
+
+  <a class="card" href="epd-podpisi/">
+    <b>Электронные подписи</b>
+    <span>Госключ, МЧД и РуТокен с NFC: как получить и как настроить.</span>
+  </a>
+
+  <a class="card" href="epd-kalkulyator/">
+    <b>Калькулятор тарифов</b>
+    <span>Несколько вопросов — и расчёт: сколько документов и рублей в год, какой пакет подойдёт.</span>
+  </a>
+
+  <footer>Вопросы — <a href="mailto:epd@platformaofd.ru">epd@platformaofd.ru</a></footer>
+</div>
+</body>
+</html>
