@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}#status,#edit,#save,#next-todo{display:none!important}</style>
+<title>Методичка перевозчика ЭПД</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+/* Colour roles (Masha, 2026-09-14):
+   - path A = warm apricot, path B = cool blue — the only two tinted backgrounds;
+   - callouts never tint: "warn" is a filled navy card (loud), "info"/"promo" a white bordered card (quiet),
+     so neither blends with a path background;
+   - pink is reserved for draft marks (todo, screenshot placeholders) and never used for content;
+   - brand orange is UI only: primary buttons, active item in the contents. */
+:root {
+  --ground: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f3f5f8;
+  --ink: #1e2b38;
+  --ink-2: #475563;
+  --muted: #6b7886;
+  --faded: #9aa4ae;
+  --line: #dde3ea;
+  --line-soft: #edf0f4;
+  --accent: #f0a03a;
+  --accent-ink: #a3580a;
+  --on-accent: #1f1405;
+  --link: #1f63a0;
+  --a-bg: #fdf1e7;
+  --a-line: #f1d7c2;
+  --a-ink: #a94e17;
+  --a-chip: #a94e17;
+  --a-chip-ink: #ffffff;
+  --b-bg: #ecf3fb;
+  --b-line: #cddff0;
+  --b-ink: #1f5f9a;
+  --b-chip: #1f5f9a;
+  --b-chip-ink: #ffffff;
+  --warn-bg: #1d3557;
+  --warn-text: #e6eef7;
+  --warn-strong: #ffffff;
+  --warn-icon: #f5b544;
+  --warn-link: #a9d4ff;
+  --note-bg: #ffffff;
+  --note-line: #cbd5df;
+  --note-icon: #1f63a0;
+  --num-bg: #1e2b38;
+  --num-ink: #ffffff;
+  --mark-bg: #fbe1f0;
+  --mark-line: #e2a1c7;
+  --mark-ink: #8a1a5e;
+  --edit-ring: #e58a17;
+  --shadow: 0 1px 2px rgba(30,43,56,.06), 0 8px 22px -16px rgba(30,43,56,.3);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #13171b;
+    --surface: #1b2026;
+    --surface-2: #232931;
+    --ink: #e6ebf0;
+    --ink-2: #bcc6d0;
+    --muted: #8a96a2;
+    --faded: #66717c;
+    --line: #333b44;
+    --line-soft: #272e36;
+    --accent: #f0a03a;
+    --accent-ink: #f3b465;
+    --on-accent: #1f1405;
+    --link: #8ec3ee;
+    --a-bg: #2a211b;
+    --a-line: #4a3628;
+    --a-ink: #f1ab7c;
+    --a-chip: #f1ab7c;
+    --a-chip-ink: #2a1a0e;
+    --b-bg: #17212c;
+    --b-line: #2a3c4f;
+    --b-ink: #8ec3ee;
+    --b-chip: #8ec3ee;
+    --b-chip-ink: #0f1c28;
+    --warn-bg: #22406b;
+    --warn-text: #e9f1f9;
+    --warn-strong: #ffffff;
+    --warn-icon: #f5b544;
+    --warn-link: #b3dbff;
+    --note-bg: #1b2026;
+    --note-line: #3b4652;
+    --note-icon: #8ec3ee;
+    --num-bg: #dfe6ec;
+    --num-ink: #13171b;
+    --mark-bg: #4a1f3a;
+    --mark-line: #8a4271;
+    --mark-ink: #f6c1e1;
+    --edit-ring: #f0a03a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #13171b;
+  --surface: #1b2026;
+  --surface-2: #232931;
+  --ink: #e6ebf0;
+  --ink-2: #bcc6d0;
+  --muted: #8a96a2;
+  --faded: #66717c;
+  --line: #333b44;
+  --line-soft: #272e36;
+  --accent: #f0a03a;
+  --accent-ink: #f3b465;
+  --on-accent: #1f1405;
+  --link: #8ec3ee;
+  --a-bg: #2a211b;
+  --a-line: #4a3628;
+  --a-ink: #f1ab7c;
+  --a-chip: #f1ab7c;
+  --a-chip-ink: #2a1a0e;
+  --b-bg: #17212c;
+  --b-line: #2a3c4f;
+  --b-ink: #8ec3ee;
+  --b-chip: #8ec3ee;
+  --b-chip-ink: #0f1c28;
+  --warn-bg: #22406b;
+  --warn-text: #e9f1f9;
+  --warn-strong: #ffffff;
+  --warn-icon: #f5b544;
+  --warn-link: #b3dbff;
+  --note-bg: #1b2026;
+  --note-line: #3b4652;
+  --note-icon: #8ec3ee;
+  --num-bg: #dfe6ec;
+  --num-ink: #13171b;
+  --mark-bg: #4a1f3a;
+  --mark-line: #8a4271;
+  --mark-ink: #f6c1e1;
+  --edit-ring: #f0a03a;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Golos Text", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: "Golos Text", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; text-wrap: balance; }
+strong, b { font-weight: 600; }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--edit-ring); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- панель ---------- */
+.bar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px clamp(16px, 4vw, 40px);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar .mark {
+  font: 700 13px/1 "Golos Text", sans-serif;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink);
+}
+.bar .logo { display: block; height: 32px; width: auto; }
+.bar .spacer { flex: 1 1 auto; }
+/* the page's one call to action: the client's personal account, in a new tab */
+.btn.cab { text-decoration: none; }
+.cab-short { display: none; }
+.btn {
+  font: 500 14px/1 "Golos Text", sans-serif;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 15px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  transition: background .15s, border-color .15s;
+}
+.btn:hover { background: var(--surface-2); }
+.btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.05); background: var(--accent); }
+.btn[disabled] { opacity: .45; cursor: default; }
+.btn.todo-nav { border-color: var(--mark-line); background: var(--mark-bg); color: var(--mark-ink); }
+.btn.todo-nav:hover { filter: brightness(.97); background: var(--mark-bg); }
+.status { font-size: 13.5px; color: var(--muted); }
+.status.dirty { color: var(--accent-ink); font-weight: 600; }
+@media (max-width: 640px) {
+  .bar { gap: 8px; padding-top: 8px; padding-bottom: 8px; }
+  .bar .mark, .bar .status:not(.dirty) { display: none; }
+  .bar .logo { height: 28px; }
+  .btn { padding: 8px 11px; font-size: 13.5px; }
+  .cab-long { display: none; }
+  .cab-short { display: inline; }
+}
+
+/* ---------- каркас ---------- */
+.wrap {
+  display: grid; grid-template-columns: 1fr; gap: 0;
+  max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px) 96px;
+}
+.toc { display: none; }
+@media (min-width: 1060px) {
+  .wrap { grid-template-columns: 264px minmax(0, 1fr); gap: 56px; }
+  .toc {
+    display: block; position: sticky; top: 58px; align-self: start;
+    max-height: calc(100vh - 58px); overflow-y: auto; overscroll-behavior: contain;
+    padding: 38px 10px 32px 0; scrollbar-width: thin;
+  }
+  .btn.toc-btn, .mtoc { display: none !important; }
+}
+.doc { min-width: 0; max-width: 72ch; padding-top: 32px; }
+/* contents hidden for now (Masha, 2026-09-14): the code stays, delete this block to bring it back */
+.toc, .btn.toc-btn, .mtoc { display: none !important; }
+.wrap { display: block; }
+.doc { margin: 0 auto; }
+
+/* ---------- оглавление ---------- */
+.toc-top { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.toc-t {
+  font: 600 12px/1 "Golos Text", sans-serif; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.toc-l, .toc-l ul { list-style: none; margin: 0; padding: 0; }
+.toc-l > li { border-top: 1px solid var(--line-soft); padding: 5px 0; }
+.toc-l > li > a {
+  display: block; padding: 5px 0; text-decoration: none;
+  font: 500 14.5px/1.35 "Golos Text", sans-serif; color: var(--ink);
+}
+.toc-l ul { margin: 0 0 4px 1px; border-left: 1px solid var(--line); }
+.toc-l ul a {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-left: -1px; padding: 4px 0 4px 12px; border-left: 2px solid transparent;
+  font-size: 14px; line-height: 1.35; color: var(--ink-2); text-decoration: none;
+}
+.toc-l ul a .lbl { flex: 1 1 auto; min-width: 0; }
+.toc-l a:hover { color: var(--accent-ink); }
+.toc-l > li > a.in { color: var(--accent-ink); }
+.toc-l ul a.on { border-left-color: var(--accent); color: var(--ink); font-weight: 600; }
+.chs { flex: 0 0 auto; display: inline-flex; gap: 3px; }
+.ch {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 19px; height: 19px; padding: 0 4px; border-radius: 5px;
+  font: 600 12px/1 "Golos Text", sans-serif; font-style: normal;
+  background: var(--a-bg); color: var(--a-ink); border: 1px solid var(--a-line);
+}
+.ch.b { background: var(--b-bg); color: var(--b-ink); border-color: var(--b-line); }
+
+.mtoc {
+  position: fixed; left: 0; right: 0; z-index: 49;
+  max-height: 72vh; overflow-y: auto; overscroll-behavior: contain;
+  padding: 16px clamp(16px, 4vw, 40px) 22px;
+  background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow);
+}
+
+/* ---------- шапка ---------- */
+/* compact on purpose: the title, intro and every folded section fit on the first screen */
+.hero { margin-bottom: 14px; }
+.hero h1 {
+  font-size: clamp(26px, 4vw, 36px); font-weight: 700; line-height: 1.15;
+  letter-spacing: -.02em; margin: 0;
+}
+.doc .intro p { color: var(--ink-2); margin-bottom: 10px; }
+.intro + .sec { margin-top: 26px; }
+
+/* ---------- кнопка «Наверх» ---------- */
+.totop {
+  position: fixed; right: clamp(14px, 3vw, 28px); bottom: clamp(14px, 3vw, 28px); z-index: 40;
+  display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px 10px 12px;
+  border: 0; border-radius: 999px; background: var(--num-bg); color: var(--num-ink);
+  font: 500 14px/1 "Golos Text", sans-serif; cursor: pointer; box-shadow: var(--shadow);
+}
+.totop:hover { filter: brightness(1.12); }
+
+/* ---------- разделы и шаги: сворачиваются по клику на заголовок ---------- */
+.sec { margin-top: 52px; border-top: 2px solid var(--ink); scroll-margin-top: 64px; }
+.sec:first-child, .sec.shut + .sec { margin-top: 0; }
+.st { margin-top: 26px; border-top: 1px solid var(--line); scroll-margin-top: 64px; }
+.st.shut + .st { margin-top: 0; }
+.hd { display: flex; align-items: flex-start; gap: 14px; cursor: pointer; }
+body.editing .hd { cursor: default; }
+.hd > h1, .hd > h2 { flex: 1 1 auto; min-width: 0; margin: 0; }
+.sec > .hd { padding: 18px 0 12px; }
+.sec.shut > .hd { padding: 12px 0; }
+.sec > .hd > h1 { font-size: 22px; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
+.sec > .hd > .tg { width: 30px; height: 30px; }
+/* must come after the base heading and intro sizes it overrides */
+@media (max-width: 640px) {
+  /* keep section titles on one line so the folded list still fits a phone screen */
+  .sec > .hd > h1 { font-size: 18.5px; }
+  .doc .intro p { font-size: 15.5px; }
+}
+.st > .hd { padding: 16px 0 8px; }
+.st.shut > .hd { padding-bottom: 16px; }
+.st > .hd > h2 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+.tg {
+  flex: 0 0 auto; width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink-2); cursor: pointer; transition: border-color .15s, color .15s;
+}
+.st > .hd > .tg { width: 30px; height: 30px; margin-top: -1px; }
+.hd:hover > .tg { border-color: var(--ink-2); color: var(--ink); }
+.tg svg { transition: transform .18s ease; }
+.shut > .hd > .tg svg { transform: rotate(-90deg); }
+.hd > h1, .hd > h2 { transition: color .2s; }
+/* once an item is open, its folded siblings fade to light grey and lose weight, so only the open one stands out */
+#app:has(> .sec:not(.shut)) > .sec.shut { border-top-color: var(--line); }
+#app:has(> .sec:not(.shut)) > .sec.shut > .hd > h1,
+.bd:has(> .st:not(.shut)) > .st.shut > .hd > h2 { color: var(--faded); font-weight: 500; }
+#app:has(> .sec:not(.shut)) > .sec.shut > .hd > .tg,
+.bd:has(> .st:not(.shut)) > .st.shut > .hd > .tg { border-color: var(--line-soft); color: var(--faded); }
+#app:has(> .sec:not(.shut)) > .sec.shut > .hd:hover > h1,
+.bd:has(> .st:not(.shut)) > .st.shut > .hd:hover > h2 { color: var(--ink); }
+.bd:has(> .zone:not(.shut)) > .zone.shut { opacity: .5; transition: opacity .2s; }
+.bd:has(> .zone:not(.shut)) > .zone.shut:hover { opacity: 1; }
+
+/* ---------- текст ---------- */
+.doc h3 { font-size: 17.5px; font-weight: 600; margin: 26px 0 6px; }
+.doc p { margin: 0 0 14px; }
+.bl, .nm, .ck { display: flex; gap: 12px; margin: 0 0 9px; }
+.bl .dot { flex: 0 0 auto; width: 14px; color: var(--muted); text-align: center; }
+.nm .n {
+  flex: 0 0 auto; min-width: 26px; height: 26px; margin-top: 1px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: var(--num-bg); color: var(--num-ink);
+  font: 600 13px/1 "Golos Text", sans-serif; font-variant-numeric: tabular-nums;
+}
+.ck .box {
+  flex: 0 0 auto; width: 20px; height: 20px; margin-top: 4px;
+  border: 2px solid var(--ink-2); border-radius: 5px; background: var(--surface);
+}
+.tx { min-width: 0; flex: 1 1 auto; }
+
+mark.todo {
+  background: var(--mark-bg); color: var(--mark-ink);
+  padding: 1px 6px; border-radius: 4px; font-size: .9em;
+}
+
+/* ---------- выноски ---------- */
+.callout {
+  display: flex; gap: 12px; margin: 18px 0; padding: 14px 18px 14px 14px;
+  border-radius: 10px; font-size: 16px;
+}
+.callout .ic {
+  flex: 0 0 auto; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 700 14px/1 "Golos Text", sans-serif;
+}
+.callout .ct { flex: 1 1 auto; min-width: 0; }
+.callout.warn { background: var(--warn-bg); color: var(--warn-text); }
+.callout.warn .ic { background: var(--warn-icon); color: var(--warn-bg); }
+.callout.warn strong { color: var(--warn-strong); }
+.callout.warn a { color: var(--warn-link); }
+.callout.info, .callout.promo { background: var(--note-bg); border: 1px solid var(--note-line); color: var(--ink); }
+.callout.info .ic, .callout.promo .ic { border: 2px solid var(--note-icon); color: var(--note-icon); }
+
+/* ---------- пути А и Б ---------- */
+.zone {
+  margin: 28px 0; padding: 18px clamp(14px, 3vw, 24px) 6px;
+  border-radius: 14px; border: 1px solid var(--a-line); background: var(--a-bg);
+}
+.zone.b { border-color: var(--b-line); background: var(--b-bg); }
+.lane { align-items: flex-start; gap: 12px; }
+.lane-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.zone:not(.shut) > .lane { margin-bottom: 12px; }
+.zone.shut { padding-bottom: 18px; }
+.zone > .hd > .tg { width: 30px; height: 30px; background: var(--surface); }
+.zone.a > .hd > .tg { border-color: var(--a-line); color: var(--a-ink); }
+.zone.b > .hd > .tg { border-color: var(--b-line); color: var(--b-ink); }
+.chip {
+  font: 600 12px/1 "Golos Text", sans-serif; letter-spacing: .08em; text-transform: uppercase;
+  padding: 6px 9px; border-radius: 6px; background: var(--a-chip); color: var(--a-chip-ink);
+}
+.zone.b .chip { background: var(--b-chip); color: var(--b-chip-ink); }
+.lane-t { font: 600 19px/1.3 "Golos Text", sans-serif; color: var(--a-ink); }
+.zone.b .lane-t { color: var(--b-ink); }
+.zone .st { border-top-color: var(--a-line); }
+.zone.b .st { border-top-color: var(--b-line); }
+
+/* ---------- таблицы ---------- */
+.tw { overflow-x: auto; margin: 18px 0 22px; }
+table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 15.5px; }
+th, td { border: 1px solid var(--line); padding: 10px 13px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); font: 600 14px/1.4 "Golos Text", sans-serif; }
+td { background: var(--surface); }
+table.cmp th { font-size: 15.5px; padding: 12px 14px; }
+table.cmp th.hl { background: var(--num-bg); border-color: var(--num-bg); color: var(--num-ink); }
+table.cmp td.hl { background: var(--surface-2); }
+/* side-by-side comparisons get equal columns; an empty first header marks a narrow label column */
+table.eq, table.opts { table-layout: fixed; }
+table.opts th:first-child { width: 24%; }
+
+/* ---------- картинки ---------- */
+figure { margin: 18px 0 24px; }
+figure img {
+  display: block; width: auto; max-width: 100%; height: auto; max-height: 440px;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--surface);
+  box-shadow: var(--shadow); cursor: zoom-in;
+}
+figure.md img { max-width: min(100%, 480px); }
+figure.sm img { max-width: min(100%, 260px); }
+figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.row { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: start; margin: 18px 0 24px; }
+.row figure { margin: 0; }
+.row figure img { max-height: 400px; }
+
+.lb { padding: 0; border: 0; background: transparent; max-width: 96vw; max-height: 96vh; overflow: visible; }
+.lb::backdrop { background: rgba(10, 16, 22, .84); }
+.lb img { display: block; width: auto; height: auto; max-width: 96vw; max-height: 88vh; border-radius: 8px; background: #ffffff; cursor: zoom-out; }
+.lb p { margin: 10px 0 0; text-align: center; font-size: 15px; color: #e9eef3; }
+
+.ph {
+  margin: 22px 0; padding: 26px 20px; border-radius: 10px;
+  border: 2px dashed var(--mark-line); background: var(--surface); text-align: center;
+}
+.ph-k {
+  display: block; margin-bottom: 8px;
+  font: 600 12px/1 "Golos Text", sans-serif; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--mark-ink);
+}
+.ph-t { font-size: 15.5px; color: var(--ink-2); }
+
+.flash { animation: flash 1.4s ease-out; }
+@keyframes flash { 0% { box-shadow: 0 0 0 6px var(--mark-line); } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+/* ---------- правка ---------- */
+[data-ed] { border-radius: 5px; }
+body.editing [data-ed] {
+  outline: 1px dashed color-mix(in srgb, var(--edit-ring) 42%, transparent);
+  outline-offset: 3px; cursor: text;
+}
+body.editing [data-ed]:hover { outline-style: solid; }
+body.editing [data-ed]:focus {
+  outline: 2px solid var(--edit-ring); outline-offset: 3px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+
+<script id="doc-data" type="application/json">[{"t": "p", "text": "С 1 сентября 2026 г. транспортные накладные стали электронными, их нужно подписывать электронной подписью."}, {"t": "p", "text": "Как это будет для перевозчиков: вы регистрируетесь в личном кабинете оператора ЭПД, водитель подписывает накладную при погрузке и разгрузке в приложении и показывает инспектору ГИБДД QR-код."}, {"t": "h1", "text": "1. Зарегистрироваться и купить лицензию"}, {"t": "p", "text": "Этот раздел одинаковый для всех — и для ИП, и для компаний с водителями."}, {"t": "h2", "text": "Шаг 1. Зарегистрируйтесь в личном кабинете"}, {"t": "callout", "kind": "info", "text": "**Регистрируйтесь лучше с компьютера** — подписать оферту в конце регистрации можно только с него."}, {"t": "num", "n": "1", "text": "Откройте [epd.platformaofd.ru](https://epd.platformaofd.ru)."}, {"t": "num", "n": "2", "text": "Укажите телефон и введите код из СМС."}, {"t": "num", "n": "3", "text": "Введите ФИО, почту и придумайте пароль."}, {"t": "img", "cap": "Личные данные и пароль", "src": "img/reg-step-personal-data.jpg"}, {"t": "num", "n": "4", "text": "Добавьте свою компанию — укажите её ИНН."}, {"t": "img", "cap": "Добавление компании по ИНН", "src": "img/reg-step-add-company.jpg"}, {"t": "num", "n": "5", "text": "Проверьте реквизиты компании."}, {"t": "img", "cap": "Проверка реквизитов", "src": "img/reg-step-check-requisites.jpg"}, {"t": "h2", "text": "Шаг 2. Купите лицензию"}, {"t": "p", "text": "В личном кабинете нажмите «Купить лицензию» и выберите тариф."}, {"t": "img", "cap": "Кнопка «Купить лицензию»", "src": "img/reg-step-buy-license-nav.jpg"}, {"t": "p", "text": "Как посчитать, сколько документов нужно:"}, {"t": "bullet", "text": "Для перевозчика **1 точка доставки = 1 документ**. Цена документа — от 2,5 до 10 ₽: чем больше пакет, тем дешевле."}, {"t": "bullet", "text": "Если одна машина развозит груз по нескольким точкам, накладная нужна на каждую точку выгрузки."}, {"t": "bullet", "text": "Пакет документов действует **1 год**."}, {"t": "callout", "kind": "info", "text": "**Акция «Нам 10 лет».** К каждой лицензии — на 20% больше документов в подарок, цена та же."}, {"t": "img", "cap": "Тарифы по акции: зачёркнуто — обычный пакет, рядом — сколько документов вы получите", "src": "img/reg-tariff-cards.jpg"}, {"t": "p", "text": "Оплатить лицензию можно с расчётного счёта организации или через моментальные платежи Сбера. Лицензия включится **через сутки после оплаты**."}, {"t": "p", "text": "Вы приобрели наш сервис через одного из партнеров? Введите ключ активации сервиса в поле «Ключ активации» справа от тарифов и нажмите «Активировать» — лицензия включится сразу, без суточного ожидания."}, {"t": "img", "cap": "Поле «Ключ активации» — справа от тарифов", "src": "img/reg-activation-key.jpg"}, {"t": "callout", "kind": "info", "text": "**Много перевозок?** Согласуйте с менеджером специальные условия — [оставьте заявку на сайте](https://platformaofd.ru/services/platforma-epd/#epdform)."}, {"t": "h1", "text": "2. Сделать электронные подписи"}, {"t": "p", "text": "ЭПД — юридически значимые документы, поэтому их подписывают усиленной квалифицированной электронной подписью (УКЭП). Какая подпись нужна именно вам:"}, {"t": "bullet", "text": "**Вы ИП и возите грузы сами** → УКЭП юрлица на токене."}, {"t": "bullet", "text": "**Вы наёмный водитель** → УКЭП физлица через Госключ и доверенность (МЧД) от руководителя."}, {"t": "branch", "kind": "ip", "text": "Путь А. ИП возит грузы сам — УКЭП юрлица на токене"}, {"t": "p", "text": "Вам нужна одна подпись — УКЭП юрлица на токене с NFC. Ей можно подписывать документы и с компьютера, и с телефона."}, {"t": "p", "text": "Чтобы её получить, сначала купите токен с NFC — защищённую флешку, на которой будет храниться подпись. Потом запишите на токен подпись в налоговой или в коммерческом удостоверяющем центре."}, {"t": "h2", "text": "Шаг 1. Купите токен с NFC"}, {"t": "p", "text": "С NFC работают все модели линейки **Рутокен ЭЦП 3.0**: USB-токен, смарт-карта, Slim-A и Slim-C. В налоговой такие токены не продаются — купить можно на маркетплейсах или у нас (дольше на 3–5 дней, но надёжнее)."}, {"t": "h3", "text": "Как заказать токен с NFC у нас"}, {"t": "p", "text": "Нужен **Рутокен ЭЦП 3.0 NFC 3100, серт. ФСБ** — 3 730 ₽, доставка включена. [Заказать токен](https://platformatd.ru/tokeny/rutoken-ecp-3-0-3100-nfc-slim-a/)"}, {"t": "num", "n": "1", "text": "Откройте [карточку товара](https://platformatd.ru/tokeny/rutoken-ecp-3-0-3100-nfc-slim-a/) и добавьте его в корзину."}, {"t": "img", "cap": "Карточка товара — нажмите «В корзину»", "src": "img/token-01.jpg"}, {"t": "num", "n": "2", "text": "Авторизуйтесь. Если вы уже зарегистрированы на Платформе ЭПД — входите с тем же логином и паролем.\nЕсли нет — нажмите «Зарегистрироваться» и укажите почту, телефон, ИНН компании и пароль."}, {"t": "imgrow", "items": [{"src": "img/token-02.jpg", "cap": "Экран входа"}, {"src": "img/token-03.jpg", "cap": "Форма регистрации"}]}, {"t": "callout", "kind": "info", "text": "**Это один и тот же аккаунт.** С этими логином и паролем вы потом входите в Платформу ЭПД."}, {"t": "num", "n": "3", "text": "Оформите доставку. Адрес выбирайте из выпадающего списка, начиная с города, — так он точно сохранится.\nЕсли полный адрес не выбирается, укажите только город, а улицу и дом впишите в «Комментарии к заказу»."}, {"t": "imgrow", "items": [{"src": "img/token-04.jpg", "cap": "Контактное лицо и адрес доставки"}, {"src": "img/token-05.jpg", "cap": "Оплата — по счёту или картой"}]}, {"t": "p", "text": "Платёж обычно проходит сразу, иногда — до 3 рабочих дней."}, {"t": "p", "text": "После оплаты токен отправят по указанному адресу, а на странице заказа появится трек-номер."}, {"t": "h2", "text": "Шаг 2. Запишите подпись в налоговой"}, {"t": "p", "text": "Когда токен у вас на руках, лично обратитесь в удостоверяющий центр ФНС — на токен запишут вашу подпись. Это бесплатно. Возьмите с собой:"}, {"t": "bullet", "text": "**Оригинал паспорта РФ** — копии не принимают"}, {"t": "bullet", "text": "СНИЛС — номер или оригинал"}, {"t": "bullet", "text": "ИНН предпринимателя — достаточно знать номер"}, {"t": "bullet", "text": "**Сам токен** — токены с NFC в налоговой не продаются, купите заранее"}, {"t": "bullet", "text": "Сертификат на токен — если его нет в коробке, распечатайте с сайта производителя"}, {"t": "callout", "kind": "warn", "text": "**Без оригинала паспорта подпись не запишут** — копия не подойдёт."}, {"t": "callout", "kind": "warn", "text": "**Попросите выпустить сертификат в формате PKCS#11** — с неизвлекаемыми ключами прямо на токене (можно сказать «как для ЕГАИС»). В другом формате телефон не увидит подпись по NFC, даже если на компьютере всё работает. Исправить это можно только перевыпуском."}, {"t": "callout", "kind": "info", "text": "**Хотите, чтобы документы мог подписывать и бухгалтер?** Ему понадобится своя подпись — УКЭП физлица на токене или через Госключ (как её получить — в пути Б) — и доверенность МЧД от вас."}, {"t": "h2", "text": "Шаг 3. Настройте компьютер — КриптоПро"}, {"t": "p", "text": "Нужно всем, кто будет подписывать документы с компьютера: вам и вашему бухгалтеру."}, {"t": "p", "text": "**Зачем.** Токен с подписью — это просто чип. Чтобы компьютер увидел вашу подпись, нужна программа-посредник — КриптоПро — и плагин для браузера."}, {"t": "p", "text": "**Что приготовить:**"}, {"t": "bullet", "text": "Токен с электронной подписью"}, {"t": "bullet", "text": "Компьютер с интернетом"}, {"t": "bullet", "text": "Пароль от компьютера — его спросят несколько раз"}, {"t": "bullet", "text": "15–20 минут"}, {"t": "h3", "text": "Скачайте два файла"}, {"t": "p", "text": "Нужны КриптоПро CSP — программа, которая работает с подписью, и Яндекс Браузер со встроенным плагином КриптоПро."}, {"t": "num", "n": "1", "text": "Зарегистрируйтесь на [cryptopro.ru](https://cryptopro.ru) — кнопка «Регистрация» в правом верхнем углу."}, {"t": "img", "cap": "Регистрация на сайте КриптоПро", "src": "img/crypto-03.jpg"}, {"t": "num", "n": "2", "text": "В разделе «Продукты» выберите КриптоПро CSP — бесплатная версия на 90 дней — и нажмите «Скачать»."}, {"t": "img", "cap": "Страница загрузки КриптоПро CSP", "src": "img/crypto-05.jpg"}, {"t": "num", "n": "3", "text": "Там же: «Продукты» → «КриптоПро ЭЦП Browser plug-in» → «Браузер (Chromium-Gost)». Это Яндекс Браузер со встроенным плагином."}, {"t": "img", "cap": "Выбор браузера Chromium-Gost", "src": "img/crypto-06.jpg"}, {"t": "h3", "text": "Установите оба файла"}, {"t": "p", "text": "Оба файла лежат в папке «Загрузки». Установите их по очереди:"}, {"t": "num", "n": "1", "text": "**КриптоПро CSP:** запустите файл → «Далее» → согласие с лицензией → «Установить» → пароль от компьютера, если спросит → «Готово»."}, {"t": "num", "n": "2", "text": "**Яндекс Браузер:** запустите файл → «Далее» → «Далее» → «Установить» → «Готово»."}, {"t": "p", "text": "Windows может показать синее окно — это нормально: программа новая, антивирус её пока не знает. Нажмите «Подробнее», затем «Выполнить в любом случае». На втором файле окно может появиться снова — действуйте так же."}, {"t": "callout", "kind": "warn", "text": "**Когда оба файла установлены, перезагрузите компьютер:** «Пуск» → «Выключение» → «Перезагрузка». Без этого браузер не увидит КриптоПро."}, {"t": "h3", "text": "Проверьте, что всё работает"}, {"t": "num", "n": "1", "text": "Вставьте токен с подписью в USB-разъём."}, {"t": "num", "n": "2", "text": "Откройте браузер — справа от адресной строки появится значок плагина КриптоПро, небольшая красная печать."}, {"t": "num", "n": "3", "text": "Нажмите на значок → «Проверить работу плагина»."}, {"t": "num", "n": "4", "text": "Введите любой текст и нажмите «Подписать». Сформировалась подпись — всё готово."}, {"t": "img", "cap": "Так выглядит успешная проверка", "src": "img/crypto-08.jpg"}, {"t": "h3", "text": "Если что-то не получилось"}, {"t": "bullet", "text": "**Плагин не найден или выключен.** В Яндекс Браузере откройте меню ☰ (три полоски справа вверху) → «Дополнения» → найдите «КриптоПро ЭЦП» и включите тумблер."}, {"t": "bullet", "text": "**У сертификата нет зелёной галочки.** Откройте «КриптоПро CSP» через поиск в «Пуске» → вкладка «Сервис» → «Просмотреть сертификаты в контейнере» → «Обзор» → выберите контейнер → «ОК».\nНа вкладке «Общие» виден срок действия: если сертификат истёк, нужен новый."}, {"t": "bullet", "text": "**Всё проверили, но не работает.** Переустановите сертификат в КриптоПро (вкладка «Сервис»), перезагрузите компьютер и проверьте плагин заново."}, {"t": "bullet", "text": "**Кнопка «Подписать» в проверке плагина ничего не делает** — проблема в самом КриптоПро, а не в Платформе ЭПД. Пишите в их поддержку: [cryptopro.ru](https://cryptopro.ru) → «Поддержка», +7 (495) 995-48-20."}, {"t": "branch", "kind": "hired", "text": "Путь Б. Наёмные водители — УКЭП физлица через Госключ"}, {"t": "p", "text": "Наёмному водителю нужна УКЭП физического лица. Проще всего — Госключ: он бесплатный, а подписывать им можно прямо с телефона, без токена и компьютера."}, {"t": "h2", "text": "Что делает водитель"}, {"t": "num", "n": "1", "text": "Скачивает приложение «Госключ» — [goskey.ru](https://goskey.ru)."}, {"t": "num", "n": "2", "text": "Выпускает в нём сертификат **УКЭП**. УНЭП не подойдёт."}, {"t": "num", "n": "3", "text": "Получить УКЭП можно бесплатно:\n— прямо в приложении Госключ, если есть загранпаспорт нового образца или подтверждённая биометрия;\n— очно в МФЦ или банке-партнёре. Точки выдачи — [на карте Госключа](https://goskey.ru/map/)."}, {"t": "imgrow", "items": [{"src": "img/goskey-03.jpg", "cap": "Скачать приложение «Госключ»"}, {"src": "img/goskey-04.jpg", "cap": "Способы получить УКЭП"}]}, {"t": "callout", "kind": "info", "text": "**УКЭП из Госключа — полноценная юридически значимая подпись.** Она приравнивается к собственноручной подписи на бумажном документе."}, {"t": "callout", "kind": "warn", "text": "**Госключ — только для физлиц.** ИП и юрлица не могут подписать им документы от имени компании — им нужен токен, см. путь А."}, {"t": "h1", "text": "3. Настроить личный кабинет"}, {"t": "p", "text": "Лицензия куплена, подписи на руках — осталось настроить кабинет: подписать оферту, настроить роуминг, добавить сотрудников и заполнить справочники."}, {"t": "h2", "text": "Шаг 1. Завершите регистрацию и подпишите оферту"}, {"t": "p", "text": "Пока регистрация не завершена, в верхней панели кабинета висит плашка «Демо-режим» и часть функций недоступна."}, {"t": "p", "text": "Нажмите на ней «Завершить регистрацию» и подпишите оферту электронной подписью руководителя организации — УКЭП юрлица."}, {"t": "img", "cap": "Плашка «Демо-режим» и кнопка «Завершить регистрацию»", "src": "img/reg-step-demo-finish.jpg"}, {"t": "img", "cap": "Окно подписания оферты", "src": "img/reg-step-sign-oferta.jpg"}, {"t": "callout", "kind": "warn", "text": "**Оферту можно подписать только с компьютера**, и на нём должен стоять КриптоПро — как установить, см. раздел 2, путь А."}, {"t": "h2", "text": "Шаг 2. Настройте роуминг с контрагентами"}, {"t": "p", "text": "Чтобы обмениваться документами с компаниями, которые работают у других операторов ЭПД, нужно обменяться с ними приглашениями к документообороту — это и есть настройка роуминга."}, {"t": "callout", "kind": "warn", "text": "**Роуминг нужен со всеми участниками перевозки** — и с грузоотправителем, и с грузополучателем."}, {"t": "p", "text": "Настроить можно одним из двух способов."}, {"t": "h3", "text": "Способ 1. Пригласить контрагента самому"}, {"t": "num", "n": "1", "text": "Уточните у контрагента, каким оператором ЭДО он пользуется."}, {"t": "num", "n": "2", "text": "Откройте раздел «Контрагенты» и найдите его по названию компании и ИНН через реестр ФНС."}, {"t": "num", "n": "3", "text": "Уточните у контрагента, каким оператором ЭПД он пользуется, и отправьте приглашение."}, {"t": "img", "cap": "Раздел «Контрагенты»: поиск по ИНН через реестр ФНС и отправка приглашения", "src": "img/roaming-01.jpg"}, {"t": "h3", "text": "Способ 2. Получить приглашение от контрагента"}, {"t": "num", "n": "1", "text": "Передайте контрагенту **свой ID платформы** — он в правом верхнем блоке раздела «Контрагенты»."}, {"t": "num", "n": "2", "text": "Контрагент отправит приглашение сам — на вашей стороне оно примется автоматически."}, {"t": "img", "cap": "Свой ID платформы — скопируйте и передайте контрагенту", "src": "img/roaming-02.jpg"}, {"t": "callout", "kind": "info", "text": "**Контрагент подключён?** Сообщите ему, что готовы подписать тестовую транспортную накладную. Лучше проверить всю цепочку заранее, чем разбираться на погрузке."}, {"t": "h2", "text": "Шаг 3. Добавьте сотрудников"}, {"t": "branch", "kind": "ip", "text": "Путь А. ИП возит грузы сам"}, {"t": "p", "text": "Себя добавлять не нужно. Но если у вас есть бухгалтер или другое доверенное лицо, добавьте его в кабинет: сядет телефон в рейсе или не будет интернета на погрузке — бухгалтер подпишет документы с компьютера."}, {"t": "callout", "kind": "info", "text": "**Бухгалтеру понадобятся своя УКЭП физлица и доверенность МЧД от вас.** Как получить подпись — раздел 2, путь Б. Как выпустить МЧД — ниже, в пути Б."}, {"t": "num", "n": "1", "text": "В правом верхнем углу нажмите на своё имя → «Сотрудники» → «Отправить приглашение»."}, {"t": "num", "n": "2", "text": "Укажите email бухгалтера и выберите роль «Администратор»."}, {"t": "num", "n": "3", "text": "Выпустите на него МЧД. Чтобы подписывать с компьютера, ему также нужен КриптоПро."}, {"t": "img", "cap": "Форма приглашения сотрудника", "size": "md", "src": "img/app-07.jpg"}, {"t": "branch", "kind": "hired", "text": "Путь Б. Наёмные водители"}, {"t": "p", "text": "Каждого водителя нужно добавить в кабинет и выпустить на него доверенность. Вы отправляете приглашение, водителю приходит письмо, он переходит по ссылке и регистрируется."}, {"t": "h3", "text": "Пригласите водителя"}, {"t": "p", "text": "В правом верхнем углу нажмите на своё имя → «Сотрудники» → «Отправить приглашение». Укажите email водителя, выберите роль и нажмите «Отправить приглашение»."}, {"t": "table", "headers": ["Роль", "Что может подписывать"], "rows": [["Водитель", "Только Т2 и Т4 в транспортной накладной — погрузку и разгрузку. Для рейсов этого достаточно"], ["Администратор", "Все документы: заказ-заявки, переадресацию, смену маршрута, замену водителя или машины"]]}, {"t": "img", "cap": "Приглашение сотрудника и выбор роли", "size": "md", "src": "img/app-07.jpg"}, {"t": "h3", "text": "Водитель принимает приглашение"}, {"t": "p", "text": "Водителю на почту придёт письмо «Вас добавили в организацию». Дальше он:"}, {"t": "num", "n": "1", "text": "Нажимает «Посмотреть приглашение» в письме."}, {"t": "num", "n": "2", "text": "Регистрируется: телефон → код из СМС → ФИО → пароль. **Этот же пароль нужен для входа в мобильное приложение** — пусть запишет."}, {"t": "num", "n": "3", "text": "Заходит в раздел «Мои данные» и заполняет свои **ИНН и СНИЛС**."}, {"t": "callout", "kind": "warn", "text": "Без ИНН и СНИЛС войти в приложение не получится."}, {"t": "imgrow", "items": [{"src": "img/app-08.jpg", "cap": "Письмо-приглашение"}, {"src": "img/app-09.jpg", "cap": "«Мои данные» → заполнить ИНН и СНИЛС"}]}, {"t": "h3", "text": "Выпустите доверенность (МЧД)"}, {"t": "p", "text": "МЧД — машиночитаемая доверенность. Она нужна, чтобы водитель мог подписывать накладные от имени вашей компании своей личной подписью. Делается бесплатно, прямо в кабинете."}, {"t": "num", "n": "1", "text": "Нажмите на иконку МЧД в верхней панели → «Создать»."}, {"t": "img", "cap": "Переход в раздел МЧД", "src": "img/poa-01.jpg"}, {"t": "num", "n": "2", "text": "«Сведения о представляемом лице» — данные вашей организации. Нажмите «Заполнить данные из сертификата ЭЦП» и проверьте: заполнится не всё, остальное допишите вручную."}, {"t": "img", "cap": "Сведения о представляемом лице", "src": "img/poa-03.jpg"}, {"t": "num", "n": "3", "text": "«Сведения об уполномоченном представителе» — данные водителя, на которого выпускается доверенность."}, {"t": "img", "cap": "Сведения о представителе", "src": "img/poa-05.jpg"}, {"t": "num", "n": "4", "text": "«Сведения по доверенности» — срок действия и внутренний номер. Если номера доверенностей вы нигде не ведёте, укажите любой: например, 1, 2, 3."}, {"t": "num", "n": "5", "text": "«Полномочия представителя» → в поле «Полномочия в свободной форме» напишите: **«подписание электронных перевозочных документов»**."}, {"t": "img", "cap": "Полномочия в свободной форме", "size": "md", "src": "img/poa-07.jpg"}, {"t": "num", "n": "6", "text": "Нажмите «Отправить на подпись» → раздел «Ожидают подписания» → выберите доверенность и подпишите её электронной подписью руководителя."}, {"t": "img", "cap": "Подписание доверенности", "size": "md", "src": "img/poa-09.jpg"}, {"t": "h2", "text": "Шаг 4. Заполните справочники"}, {"t": "p", "text": "Это необязательно, но удобно: данные будут подставляться в документы автоматически — не придётся каждый раз вбивать номера машин и ФИО."}, {"t": "p", "text": "В правом верхнем углу нажмите на своё имя → «Справочники» → добавьте водителей и транспортные средства."}, {"t": "img", "cap": "Меню под вашим именем → «Справочники»", "src": "img/directories-01.jpg"}, {"t": "img", "cap": "Справочники: вкладки водителей, транспортных средств и прицепов, кнопка «Добавить водителя»", "src": "img/directories-02.jpg"}, {"t": "callout", "kind": "info", "text": "**Возите сами?** Всё равно внесите себя в справочник как водителя."}, {"t": "h2", "text": "Проверьте себя перед первым рейсом"}, {"t": "check", "text": "Плашка «Демо-режим» убрана, оферта подписана"}, {"t": "check", "text": "Лицензия оплачена и включилась (через сутки после оплаты)"}, {"t": "check", "text": "Роуминг настроен и с грузоотправителем, и с грузополучателем"}, {"t": "check", "text": "**Для ИП:** есть УКЭП юрлица на токене с NFC, на компьютере стоит КриптоПро"}, {"t": "check", "text": "**Для наёмных водителей:** у каждого есть УКЭП физлица в Госключе"}, {"t": "check", "text": "Сотрудники добавлены, у каждого есть МЧД, ИНН и СНИЛС заполнены"}, {"t": "check", "text": "Водитель (или вы сами) вошёл в приложение «Платформа ЭПД»"}, {"t": "h1", "text": "4. Как работать с ЭПД с телефона"}, {"t": "h2", "text": "Как устроен обмен"}, {"t": "p", "text": "Документы создаёт грузоотправитель, а вы подтверждаете и подписываете. Вся цепочка целиком:"}, {"t": "num", "n": "1", "text": "**Грузоотправитель отправляет вам ЭЗЗ** — электронную заказ-заявку. Это коммерческая основа перевозки: что везём, откуда, куда, когда и по какой цене."}, {"t": "num", "n": "2", "text": "**Вы подтверждаете или отклоняете заявку.** Подтверждая, указываете, кто повезёт груз: данные водителя и машины. Если условия не подходят — отклоняете."}, {"t": "num", "n": "3", "text": "**По подтверждённой ЭЗЗ грузоотправитель создаёт ЭТрН** — электронную транспортную накладную. Данные из заявки переносятся в неё автоматически."}, {"t": "num", "n": "4", "text": "**ЭТрН подписывают по очереди** — каждый участник свою часть. Эти части называются титулами."}, {"t": "h2", "text": "ЭТрН: кто что подписывает"}, {"t": "p", "text": "Электронная накладная состоит из титулов — это как графы в бумажной накладной, только каждую подписывает свой участник. Обязательных титулов четыре:"}, {"t": "table", "headers": ["Титул", "Что это", "Кто подписывает"], "rows": [["Т1", "Накладная создана, груз готов к перевозке", "Грузоотправитель"], ["Т2", "Приём груза на погрузке", "**Перевозчик** — вы или ваш водитель"], ["Т3", "Приём груза на выгрузке", "Грузополучатель"], ["Т4", "Подтверждение выдачи груза (разгрузка)", "**Перевозчик** — вы или ваш водитель"]]}, {"t": "callout", "kind": "warn", "text": "Перевозчик подписывает **два обязательных титула**: Т2 на погрузке и Т4 на разгрузке."}, {"t": "p", "text": "Есть и дополнительные титулы — они нужны не всегда:"}, {"t": "bullet", "text": "**Т5 и Т6** — стоимость перевозки, их видят только отправитель и перевозчик. После доставки вы указываете стоимость в Т5. Если отправитель согласен, он может оплатить перевозку сразу по накладной — не дожидаясь акта и счёта."}, {"t": "bullet", "text": "**Т7** — переадресовка: новый пункт назначения, если маршрут изменился в пути или получатель отказался от груза. Подписывает грузоотправитель или перевозчик — как указано в Т1."}, {"t": "bullet", "text": "**Т8** — «эстафета»: замена водителя или машины в пути. Подписывает перевозчик, когда это нужно."}, {"t": "callout", "kind": "info", "text": "Документы от имени перевозчика может подписать и собственник, и сам водитель — как вам удобнее."}, {"t": "h2", "text": "Мобильное приложение «Платформа ЭПД»"}, {"t": "p", "text": "Приложение — для водителей и грузополучателей."}, {"t": "table", "headers": ["Можно в приложении", "Только с компьютера"], "rows": [["— видеть свои доставки\n— показывать QR-код накладной инспектору ГИБДД\n— подтверждать или отклонять заказ-заявку (Т2 в ЭЗЗ)\n— подписывать погрузку и разгрузку (Т2 и Т4 в ЭТрН)\n— менять пароль, писать в техподдержку, читать инструкции", "— регистрировать компанию\n— создавать ЭЗЗ и ЭТрН\n— подписывать дополнительные титулы: переадресацию, смену машины или водителя, стоимость перевозки\n— добавлять сотрудников, заполнять справочники, настраивать роуминг"]], "hl": 0}, {"t": "h3", "text": "Установка и вход"}, {"t": "num", "n": "1", "text": "Установите приложение: [Google Play](https://play.google.com/store/apps/details?id=com.edo), [RuStore](https://www.rustore.ru/catalog/app/com.edo), [App Store](https://apps.apple.com/ru/app/id6448550435)."}, {"t": "num", "n": "2", "text": "Нажмите «Войти» и введите логин и пароль от Платформы ЭПД — те же, что при регистрации по приглашению."}, {"t": "num", "n": "3", "text": "При первом входе можно придумать четырёхзначный PIN-код, чтобы дальше не вводить пароль."}, {"t": "num", "n": "4", "text": "Выберите организацию из списка — дальше приложение работает от её имени."}, {"t": "imgrow", "items": [{"src": "img/app-01.jpg", "cap": "Вход в приложение"}, {"src": "img/app-02.jpg", "cap": "Выбор организации"}, {"src": "img/app-03.jpg", "cap": "Раздел «Документы»"}]}, {"t": "h3", "text": "Документы и статусы"}, {"t": "p", "text": "После входа открывается раздел «Документы». В карточках виден статус — «Новая погрузка», «В пути», «Доставлен», «Принят получателем». Есть вкладки «В работе» и «Архив»."}, {"t": "h3", "text": "QR-код для ГИБДД"}, {"t": "p", "text": "Откройте документ и нажмите кнопку QR-кода — этот код показывают инспектору при проверке."}, {"t": "p", "text": "QR-код есть у документов со статусом «В пути»."}, {"t": "callout", "kind": "info", "text": "**QR-код работает без интернета.**\nОткройте его сразу после подписания на погрузке — код сохранится в приложении и будет доступен даже без сети."}, {"t": "imgrow", "items": [{"src": "img/app-04.jpg", "cap": "Список накладных со статусами"}, {"src": "img/app-05.jpg", "cap": "QR-код для проверки ГИБДД"}, {"src": "img/app-06.jpg", "cap": "Профиль и поддержка"}]}, {"t": "p", "text": "В разделе «Профиль» — звонок и чат с поддержкой, смена пароля, настройки подписей, очистка кэша, база знаний и выход из приложения."}, {"t": "h2", "text": "Как подписывать документы в приложении"}, {"t": "branch", "kind": "ip", "text": "Путь А. ИП подписывает УКЭП юрлица"}, {"t": "h3", "text": "Токен с NFC — просто приложить к телефону"}, {"t": "p", "text": "Бесконтактное подписание: вы прикладываете токен к телефону, как банковскую карту, и документ подписывается."}, {"t": "p", "text": "**Что должно быть готово:**"}, {"t": "bullet", "text": "Токен с NFC — подходит любая модель линейки **Рутокен ЭЦП 3.0**: USB-токен, смарт-карта, Slim-A или Slim-C"}, {"t": "bullet", "text": "Сертификат, выпущенный на этот токен, с неизвлекаемыми ключами в формате **PKCS#11**"}, {"t": "bullet", "text": "Смартфон с NFC — Android или iPhone"}, {"t": "bullet", "text": "Установленное приложение «Платформа ЭПД», в которое вы вошли"}, {"t": "p", "text": "**Как проверить, есть ли NFC:** на Android — «Настройки» → «Подключённые устройства» → «Настройки подключения» → найдите пункт «NFC» и убедитесь, что переключатель включён. На iPhone NFC включён всегда."}, {"t": "p", "text": "**Как подписать:**"}, {"t": "num", "n": "1", "text": "Найдите документ со статусом «Ждёт подписания» и откройте карточку.\nЗамечаний нет — нажмите «Принять без замечаний». Есть расхождения — «Принять с замечаниями» и заполните блок, дальше всё так же."}, {"t": "num", "n": "2", "text": "В окне «Способ подписания» выберите «Рутокен ЭЦП»."}, {"t": "imgrow", "items": [{"src": "img/nfc-01.jpg", "cap": "Карточка накладной"}, {"src": "img/nfc-02.jpg", "cap": "Способ подписания"}, {"src": "img/nfc-03.jpg", "cap": "PIN от токена"}]}, {"t": "num", "n": "3", "text": "Введите PIN-код от токена и нажмите «Продолжить»."}, {"t": "num", "n": "4", "text": "Появится подсказка «Приложите токен к телефону». Приложите Рутокен к задней панели и держите неподвижно, пока приложение считывает данные."}, {"t": "num", "n": "5", "text": "Если на токене несколько сертификатов — выберите нужный, он отметится зелёной галочкой. Нажмите «Продолжить» и снова подержите токен у телефона несколько секунд."}, {"t": "num", "n": "6", "text": "Появится «Документ подписан!». Нажмите «Закрыть» — статус в карточке обновится."}, {"t": "imgrow", "items": [{"src": "img/nfc-05.jpg", "cap": "Приложите токен"}, {"src": "img/nfc-07.jpg", "cap": "Выбор сертификата"}, {"src": "img/nfc-08.jpg", "cap": "Документ подписан"}]}, {"t": "callout", "kind": "info", "text": "У большинства смартфонов антенна NFC — в верхней части задней панели.\nОбычный чехол снимать не нужно, а металлический или с магнитами может мешать."}, {"t": "p", "text": "**Если по NFC подписать не получается:**"}, {"t": "bullet", "text": "**Токен работает на компьютере, но телефон его не видит** — почти наверняка сертификат выпущен не в том формате. Обратитесь в удостоверяющий центр, где получали подпись, и попросите перевыпустить сертификат: неизвлекаемые ключи прямо на токене, формат PKCS#11 — «как для ЕГАИС»."}, {"t": "bullet", "text": "**Токен не считывается** — держите его неподвижно ближе к верхней части задней панели."}, {"t": "branch", "kind": "hired", "text": "Путь Б. Наёмный водитель подписывает через Госключ"}, {"t": "p", "text": "Водитель нажимает «Подписать» в приложении Платформы ЭПД, переходит в приложение Госключ и подтверждает подпись."}, {"t": "h3", "text": "Один раз: включите Госключ на сайте и в приложении"}, {"t": "p", "text": "Это делает сам водитель в своём аккаунте. Включить Госключ нужно **и на сайте, и в приложении**:\n— **на сайте:** личный кабинет → «Мои данные» → «Подключить Госключ» → пройдите по подсказкам;\n— **в приложении:** «Профиль» → «Настройки подписей» → включите «Госключ»."}, {"t": "imgrow", "items": [{"src": "img/goskey-02.jpg", "cap": "На сайте: кнопка «Подключить Госключ»"}, {"src": "img/goskey-05.jpg", "cap": "Последний шаг: галочка «Включить возможность подписывать»"}]}, {"t": "h3", "text": "Подписание по шагам"}, {"t": "num", "n": "1", "text": "В приложении «Платформа ЭПД» откройте накладную, проверьте данные и нажмите «Принять без замечаний», затем «Подписать»."}, {"t": "num", "n": "2", "text": "Выберите способ «Госключ» УКЭП, проверьте, что выбран нужный документ, и нажмите «Отправить в Госключ»."}, {"t": "imgrow", "items": [{"src": "img/app-13.jpg", "cap": "Накладная к подписанию"}, {"src": "img/app-14.jpg", "cap": "Способ подписания «Госключ»"}, {"src": "img/app-15.jpg", "cap": "Отправить в Госключ"}]}, {"t": "callout", "kind": "warn", "text": "**Подписать в Госключе нужно в течение 24 часов.** Не успели — накладную придётся отправить на подпись заново."}, {"t": "num", "n": "3", "text": "Нажмите «Перейти в Госключ» — откроется приложение Госключ (или Госуслуги, если водитель работает через них). Придёт и push-уведомление."}, {"t": "num", "n": "4", "text": "Найдите раздел с документами от **ООО «Эвотор»** и откройте нужный документ."}, {"t": "num", "n": "5", "text": "Включите переключатель «Я ознакомился и готов подписать документы» и нажмите «Подписать»."}, {"t": "num", "n": "6", "text": "Появится «Документы подписаны» — статус в приложении Платформы ЭПД обновится сам."}, {"t": "imgrow", "items": [{"src": "img/app-16.jpg", "cap": "Перейти в Госключ"}, {"src": "img/app-17.jpg", "cap": "Документы от ООО «Эвотор»"}, {"src": "img/app-18.jpg", "cap": "Ознакомиться и подписать"}]}, {"t": "img", "cap": "«Документы подписаны» — готово", "size": "sm", "src": "img/app-19.jpg"}, {"t": "h1", "text": "5. Частые вопросы"}, {"t": "h2", "text": "У водителя нет интернета"}, {"t": "bullet", "text": "**Связь ограничена по соображениям безопасности** — это не помеха: Платформа ЭПД включена в «белые списки» и работает при таких ограничениях."}, {"t": "bullet", "text": "**Связи нет совсем** — на месте это не обойти. Позвоните тому, у кого есть доступ в кабинет и интернет, — собственнику или бухгалтеру — и попросите подписать документ с компьютера.\nПоэтому такого человека стоит заранее добавить в кабинет с ролью «Администратор»."}, {"t": "bullet", "text": "**Проверка ГИБДД без интернета** — не проблема, если QR-код открыт заранее: он сохраняется в приложении и работает без сети."}, {"t": "h2", "text": "Документ не пришёл"}, {"t": "p", "text": "Проверьте частые причины по порядку:"}, {"t": "num", "n": "1", "text": "**Лицензия оплачена и включилась?** Без неё работать не получится. Лицензию покупает компания, а не отдельный водитель."}, {"t": "num", "n": "2", "text": "**Роуминг настроен?** Он нужен и с отправителем, и с получателем. Откройте на сайте раздел «Контрагенты» и найдите контрагента по ИНН и КПП или по названию.\nСтатус «Роуминг настроен» — всё в порядке. «Приглашение отправлено» — попросите контрагента его принять: у некоторых операторов это делается вручную."}, {"t": "num", "n": "3", "text": "**Документ ушёл к другому оператору?** Так бывает, если у вас несколько операторов ЭДО или ЭПД — например, ЭПД у нас, а ЭДО у другого оператора. Заполняя документ, отправитель должен выбрать вашим оператором «Платформу ЭПД».\n**Как проверить:** попросите отправителя скачать документ в формате XML и найти данные перевозчика. ID перевозчика должен совпадать с вашим — он в личном кабинете, раздел «Контрагенты», правый верхний угол."}, {"t": "num", "n": "4", "text": "**Всё проверили, а документа нет?** Напишите в нашу техподдержку [epd@platformaofd.ru](mailto:epd@platformaofd.ru) и попросите контрагента обратиться в поддержку своего оператора."}, {"t": "h2", "text": "Подпись с компьютера не работает"}, {"t": "p", "text": "Скорее всего, компьютер не видит электронную подпись. Проверьте по списку:"}, {"t": "bullet", "text": "**КриптоПро установлен, а компьютер перезагружен?** Без перезагрузки браузер КриптоПро не увидит."}, {"t": "bullet", "text": "**Токен вставлен в USB?** Звучит просто, но проверьте — и попробуйте другой разъём."}, {"t": "bullet", "text": "**Плагин включён в браузере?** Меню ☰ → «Дополнения» → «КриптоПро ЭЦП» → тумблер включён."}, {"t": "bullet", "text": "**Сертификат не истёк?** «КриптоПро CSP» → «Сервис» → «Просмотреть сертификаты в контейнере» → «Обзор» → вкладка «Общие»: там виден срок действия."}, {"t": "bullet", "text": "**Подпись на Рутокене, но сайт её не видит** — установите драйвер токена с [ra.rutoken.ru](https://ra.rutoken.ru)."}, {"t": "bullet", "text": "**Подпись не работает и на других сайтах** — вероятно, дело в самом КриптоПро. Их поддержка: [cryptopro.ru](https://cryptopro.ru) → «Поддержка», +7 (495) 995-48-20."}, {"t": "callout", "kind": "info", "text": "**На других сайтах подпись работает, а на Платформе ЭПД — нет?** Напишите в нашу техподдержку: [epd@platformaofd.ru](mailto:epd@platformaofd.ru)."}, {"t": "h2", "text": "Не получается войти в личный кабинет"}, {"t": "bullet", "text": "**«Эта организация уже зарегистрирована»** — у вашей компании уже есть кабинет в одном из наших сервисов. Нажмите на плашку «Подтвердить полномочия» и подпишите УКЭП юрлица руководителя."}, {"t": "bullet", "text": "**«Неверный логин или пароль»** — нажмите «Забыл пароль» и создайте новый."}, {"t": "bullet", "text": "**«Недостаточно полномочий»** — у сотрудника нет доступа к сервису ЭПД. Войдите в кабинет от имени владельца → «Сотрудники» → выдайте сотруднику нужные права, например «Администратор»."}, {"t": "h2", "text": "Не получается добавить сотрудника"}, {"t": "bullet", "text": "**Истёк срок действия ссылки-приглашения** — отправьте приглашение заново."}, {"t": "bullet", "text": "**Ошибка 409** — сотрудник перешёл по ссылке, но вошёл не в тот аккаунт. По ссылке из приглашения нужно нажимать «Зарегистрироваться», а не «Войти»."}, {"t": "h1", "text": "Контакты"}, {"t": "table", "headers": ["Общие вопросы", "Техническая поддержка"], "rows": [["Подключение, тарифы, консультация\n**[+7 (495) 252-50-50](tel:+74952525050)**", "Технические сложности\n**[epd@platformaofd.ru](mailto:epd@platformaofd.ru)**\nОпишите проблему и укажите ИНН организации и контактный телефон."]], "eq": true}, {"t": "callout", "kind": "info", "text": "**Нужно, чтобы специалист подключился к вашему компьютеру?** Скачайте программу удалённого доступа [RuDesktop](https://rudesktop.ru/) и пришлите в письме свой ID из неё."}]</script>
+
+<div class="bar" id="bar">
+  <img class="logo" src="data:image/png;base64,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" alt="Платформа ЭПД">
+  <button class="btn toc-btn" id="toc-btn" type="button" aria-expanded="false" aria-controls="mtoc">Содержание</button>
+  <span class="spacer"></span>
+  <a class="btn primary cab" href="https://epd.platformaofd.ru" target="_blank" rel="noopener"><span class="cab-long">Перейти в личный кабинет</span><span class="cab-short">Личный кабинет</span><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <span class="status" id="status"></span>
+  <button class="btn todo-nav" id="next-todo" hidden>Не заполнено: <b id="todo-n">0</b> →</button>
+  <button class="btn" id="edit" aria-pressed="false">Режим правки</button>
+  <button class="btn primary" id="save" disabled>Сохранить</button>
+</div>
+<nav class="mtoc" id="mtoc" aria-label="Содержание" hidden><div class="toc-body"></div></nav>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Содержание"><div class="toc-body"></div></nav>
+  <main class="doc">
+    <header class="hero">
+      <h1>Переход на ЭПД для перевозчиков</h1>
+    </header>
+    <div id="app"></div>
+  </main>
+</div>
+
+<dialog class="lb" id="lb" aria-label="Скриншот крупно"><img id="lb-img" alt=""><p id="lb-cap"></p></dialog>
+<button class="totop" id="totop" type="button" hidden><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Наверх</button>
+
+<script>
+(function () {
+  "use strict";
+  var SHELL = "<!doctype html>\n" + document.documentElement.outerHTML;
+  var DOC = JSON.parse(document.getElementById("doc-data").textContent);
+  var app = document.getElementById("app");
+  var statusEl = document.getElementById("status");
+  var editBtn = document.getElementById("edit");
+  var saveBtn = document.getElementById("save");
+  var todoBtn = document.getElementById("next-todo");
+  var todoN = document.getElementById("todo-n");
+  var tocBtn = document.getElementById("toc-btn");
+  var mtoc = document.getElementById("mtoc");
+  var deskToc = document.querySelector(".toc");
+  var dirty = false, editing = false, artifact = null;
+  var SMOOTH = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  var toTop = document.getElementById("totop");
+  var CHEV = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" ' +
+    'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function rich(s) {
+    var h = esc(s);
+    h = h.replace(/\{\{([\s\S]+?)\}\}/g, '<mark class="todo">$1</mark>');
+    h = h.replace(/\*\*([\s\S]+?)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/\[([^\]]+)\]\(((?:https?:\/\/|tel:|mailto:)[^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return h.replace(/\n/g, "<br>");
+  }
+  function plain(s) {
+    return String(s).replace(/\*\*|\{\{|\}\}/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1");
+  }
+  function ed(i, f) { return ' data-ed="1" data-i="' + i + '" data-f="' + f + '"'; }
+
+  function figure(src, cap, size, i, f) {
+    return "<figure" + (size ? ' class="' + esc(size) + '"' : "") + '><img src="' + esc(src) +
+      '" alt="' + esc(cap) + '" loading="lazy">' +
+      (cap ? "<figcaption" + ed(i, f) + ">" + esc(cap) + "</figcaption>" : "") + "</figure>";
+  }
+
+  // Collapsible block: h1 opens a section, h2 a step; the body is hidden "until-found" so browser search still finds text.
+  function openBox(cls, tag, i, text) {
+    return '<section class="' + cls + '" id="s' + i + '"><div class="hd"><' + tag + ed(i, "text") + ">" + rich(text) +
+      "</" + tag + '><button class="tg" type="button" aria-expanded="true" aria-controls="b' + i +
+      '" aria-label="Свернуть или развернуть">' + CHEV + '</button></div><div class="bd" id="b' + i + '">';
+  }
+
+  function render() {
+    var out = ['<div class="intro">'], toc = [], stack = [], intro = true;
+    // stack holds open containers: "sec" (h1), "st" (h2), "zone" (path A/B). A zone opened right under
+    // a section (outer 1) survives h2 headings; one opened inside a step (outer 2) ends at the next h2.
+    function top() { return stack[stack.length - 1]; }
+    function close() { stack.pop(); out.push("</div></section>"); }
+    function zoneIn() { for (var k = stack.length - 1; k >= 0; k--) if (stack[k].type === "zone") return stack[k]; return null; }
+
+    DOC.forEach(function (b, i) {
+      switch (b.t) {
+        case "h1":
+          if (intro) { out.push("</div>"); intro = false; }
+          while (stack.length) close();
+          stack.push({ type: "sec" });
+          toc.push({ id: "s" + i, text: b.text, kids: [] });
+          out.push(openBox("sec", "h1", i, b.text));
+          break;
+        case "h2":
+          while (top() && (top().type === "st" || (top().type === "zone" && top().outer >= 2))) close();
+          var z = zoneIn(), item = { id: "s" + i, text: b.text, lanes: z ? [z.kind] : [] };
+          stack.push({ type: "st", item: item });
+          if (toc.length) toc[toc.length - 1].kids.push(item);
+          out.push(openBox("st", "h2", i, b.text));
+          break;
+        case "h3": out.push("<h3" + ed(i, "text") + ">" + rich(b.text) + "</h3>"); break;
+        case "p": out.push("<p" + ed(i, "text") + ">" + rich(b.text) + "</p>"); break;
+        case "bullet":
+          out.push('<div class="bl"><span class="dot" aria-hidden="true">•</span><div class="tx"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "num":
+          out.push('<div class="nm"><span class="n">' + esc(b.n) + '</span><div class="tx"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "check":
+          out.push('<div class="ck"><span class="box" aria-hidden="true"></span><div class="tx"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "callout":
+          var kind = b.kind === "warn" ? "warn" : b.kind === "promo" ? "promo" : "info";
+          out.push('<div class="callout ' + kind + '"><span class="ic" aria-hidden="true">' + (kind === "warn" ? "!" : "i") +
+            '</span><div class="ct"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "branch":
+          if (zoneIn()) { while (top().type !== "zone") close(); close(); }
+          var lane = b.kind === "ip" ? "a" : "b", step = top() && top().type === "st" ? top() : null;
+          stack.push({ type: "zone", kind: lane, outer: step ? 2 : 1 });
+          if (step && step.item.lanes.indexOf(lane) < 0) step.item.lanes.push(lane);
+          // a path is collapsible like a section: its heading row toggles the body
+          out.push('<section class="zone ' + lane + '" id="s' + i + '"><div class="hd lane"><div class="lane-main"><span class="chip">' +
+            (lane === "a" ? "Для ИП за рулём" : "Для наёмных водителей") + '</span><span class="lane-t"' +
+            ed(i, "text") + ">" + rich(b.text) + '</span></div><button class="tg" type="button" aria-expanded="true" aria-controls="b' + i +
+            '" aria-label="Свернуть или развернуть">' + CHEV + '</button></div><div class="bd" id="b' + i + '">');
+          break;
+        case "ph":
+          out.push('<div class="ph"><span class="ph-k">Место под скриншот</span><span class="ph-t"' +
+            ed(i, "text") + ">" + rich(b.text) + "</span></div>");
+          break;
+        case "table":
+          var tcls = ((b.hl != null ? "cmp eq" : b.eq ? "eq" : "") + (b.headers[0] ? "" : " opts")).trim();
+          var t = '<div class="tw"><table' + (tcls ? ' class="' + tcls + '"' : "") + '><thead><tr>';
+          b.headers.forEach(function (hd, c) {
+            t += "<th" + (b.hl === c ? ' class="hl"' : "") + ed(i, "hdr:" + c) + ">" + rich(hd) + "</th>";
+          });
+          t += "</tr></thead><tbody>";
+          b.rows.forEach(function (r, ri) {
+            t += "<tr>";
+            r.forEach(function (cell, ci) {
+              t += "<td" + (b.hl === ci ? ' class="hl"' : "") + ed(i, "cell:" + ri + ":" + ci) + ">" + rich(cell) + "</td>";
+            });
+            t += "</tr>";
+          });
+          out.push(t + "</tbody></table></div>");
+          break;
+        case "img":
+          out.push(figure(b.src, b.cap, b.size, i, "cap"));
+          break;
+        case "imgrow":
+          out.push('<div class="row">' + b.items.map(function (it, k) {
+            return figure(it.src, it.cap, null, i, "cap:" + k);
+          }).join("") + "</div>");
+          break;
+      }
+    });
+    if (intro) out.push("</div>");
+    while (stack.length) close();
+    app.innerHTML = out.join("\n");
+    renderToc(toc);
+    app.querySelectorAll(BOX).forEach(function (box) { setOpen(box, false); });  // everything starts folded
+    wire();
+    countTodos();
+  }
+
+  function renderToc(toc) {
+    var chip = function (l) { return '<i class="ch ' + l + '" title="' + (l === "a" ? "Путь А" : "Путь Б") + '">' + (l === "a" ? "А" : "Б") + "</i>"; };
+    var html = '<div class="toc-top"><span class="toc-t">Содержание</span></div>' +
+      '<ul class="toc-l">' + toc.map(function (s) {
+        return '<li><a href="#' + s.id + '" data-id="' + s.id + '">' + esc(plain(s.text)) + "</a>" +
+          (s.kids.length ? "<ul>" + s.kids.map(function (k) {
+            return '<li><a href="#' + k.id + '" data-id="' + k.id + '"><span class="lbl">' + esc(plain(k.text)) + "</span>" +
+              (k.lanes.length ? '<span class="chs">' + k.lanes.map(chip).join("") + "</span>" : "") + "</a></li>";
+          }).join("") + "</ul>" : "") + "</li>";
+      }).join("") + "</ul>";
+    document.querySelectorAll(".toc-body").forEach(function (el) { el.innerHTML = html; });
+  }
+
+  /* ---------- сворачивание: на каждом уровне открыт только один пункт ---------- */
+  var BOX = ".sec, .st, .zone";
+  function setOpen(box, open) {
+    var bd = box.querySelector(":scope > .bd");
+    if (open) bd.removeAttribute("hidden"); else bd.setAttribute("hidden", "until-found");
+    box.classList.toggle("shut", !open);
+    box.querySelector(":scope > .hd > .tg").setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  // fold a block together with everything inside it, so reopening starts from a clean list
+  function fold(box) {
+    setOpen(box, false);
+    box.querySelectorAll(BOX).forEach(function (inner) { if (!inner.classList.contains("shut")) setOpen(inner, false); });
+  }
+  // open a block and fold its siblings: other sections, other steps of the same section, the other path.
+  // An opened section or path also opens its first step, unless one of its steps is already open.
+  function openOnly(box) {
+    var parent = box.parentElement.closest(BOX);
+    var kind = box.classList.contains("sec") ? "sec" : box.classList.contains("st") ? "st" : "zone";
+    app.querySelectorAll("." + kind).forEach(function (other) {
+      if (other !== box && !other.classList.contains("shut") && other.parentElement.closest(BOX) === parent) fold(other);
+    });
+    setOpen(box, true);
+    if (box.classList.contains("st")) return;
+    var steps = Array.prototype.filter.call(box.querySelectorAll(".st"), function (st) { return st.parentElement.closest(BOX) === box; });
+    if (steps.length && steps.every(function (st) { return st.classList.contains("shut"); })) setOpen(steps[0], true);
+  }
+  // a click on a heading keeps that heading at the same place on screen while siblings above it fold
+  function toggle(box) {
+    var before = box.getBoundingClientRect().top;
+    if (box.classList.contains("shut")) openOnly(box); else fold(box);
+    var shift = box.getBoundingClientRect().top - before;
+    if (shift) window.scrollBy(0, shift);
+  }
+  // open every collapsed block that contains el (and el itself when it is a block), outermost first
+  function reveal(el) {
+    var chain = [];
+    for (var p = el; p && p !== app; p = p.parentElement) if (p.matches(BOX)) chain.unshift(p);
+    chain.forEach(function (box) { if (box.classList.contains("shut")) openOnly(box); });
+  }
+  // the visible stand-in for an element hidden inside collapsed blocks: the outermost collapsed block's heading row
+  function anchorOf(el) {
+    var hid = null;
+    for (var p = el.parentElement; p && p !== app; p = p.parentElement) if (p.hasAttribute("hidden")) hid = p;
+    return hid ? hid.previousElementSibling : el;
+  }
+
+  app.addEventListener("click", function (e) {
+    var img = e.target.closest("figure img");
+    if (img) { zoom(img); return; }
+    var hd = e.target.closest(".hd");
+    if (!hd) return;
+    if (editing && !e.target.closest(".tg")) return;  // while editing only the arrow toggles, so text stays clickable
+    toggle(hd.parentElement);
+    spy();
+  });
+  app.addEventListener("beforematch", function (e) {
+    var box = e.target.parentElement;
+    if (box && box.classList.contains("shut")) openOnly(box);
+  }, true);
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest(".toc-l a");
+    if (!a) return;
+    e.preventDefault();
+    var target = document.getElementById(a.dataset.id);
+    if (!target) return;
+    reveal(target);
+    closeMobileToc();
+    target.scrollIntoView({ behavior: SMOOTH, block: "start" });
+    try { history.replaceState(null, "", "#" + a.dataset.id); } catch (err) { /* sandboxed */ }
+  });
+
+  /* ---------- оглавление на телефоне ---------- */
+  function closeMobileToc() { mtoc.hidden = true; tocBtn.setAttribute("aria-expanded", "false"); }
+  tocBtn.addEventListener("click", function () {
+    if (!mtoc.hidden) { closeMobileToc(); return; }
+    mtoc.style.top = document.getElementById("bar").getBoundingClientRect().bottom + "px";
+    mtoc.hidden = false;
+    tocBtn.setAttribute("aria-expanded", "true");
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !mtoc.hidden) closeMobileToc(); });
+
+  /* ---------- крупный скриншот ---------- */
+  var lb = document.getElementById("lb");
+  function zoom(img) {
+    if (!lb.showModal) return;
+    document.getElementById("lb-img").src = img.currentSrc || img.src;
+    document.getElementById("lb-img").alt = img.alt;
+    document.getElementById("lb-cap").textContent = img.alt;
+    lb.showModal();
+  }
+  lb.addEventListener("click", function () { lb.close(); });
+
+  /* ---------- правка ---------- */
+  function ser(node) {
+    var out = "";
+    node.childNodes.forEach(function (n) {
+      if (n.nodeType === 3) { out += n.nodeValue.replace(/[ \t\r\n]+/g, " "); return; }
+      if (n.nodeType !== 1) return;
+      var tag = n.nodeName, inner;
+      if (tag === "BR") out += "\n";
+      else if (tag === "STRONG" || tag === "B") { inner = ser(n); if (inner.trim()) out += "**" + inner + "**"; }
+      else if (tag === "MARK") { inner = ser(n); if (inner.trim()) out += "{{" + inner + "}}"; }
+      else if (tag === "A") {
+        var href = n.getAttribute("href") || "";
+        out += /^(https?:\/\/|tel:|mailto:)/.test(href) ? "[" + ser(n) + "](" + href + ")" : ser(n);
+      }
+      else if (tag === "DIV" || tag === "P") { if (out && out.slice(-1) !== "\n") out += "\n"; out += ser(n); }
+      else out += ser(n);
+    });
+    return out;
+  }
+  function serialize(el) {
+    return ser(el).split("\n").map(function (l) { return l.replace(/ {2,}/g, " ").trim(); })
+      .join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
+
+  function store(i, f, val) {
+    var b = DOC[i], m;
+    if (f === "text") b.text = val;
+    else if (f === "cap") b.cap = val;
+    else if ((m = f.match(/^cap:(\d+)$/))) b.items[+m[1]].cap = val;
+    else if ((m = f.match(/^hdr:(\d+)$/))) b.headers[+m[1]] = val;
+    else if ((m = f.match(/^cell:(\d+):(\d+)$/))) b.rows[+m[1]][+m[2]] = val;
+  }
+
+  function wire() {
+    app.querySelectorAll("[data-ed]").forEach(function (el) {
+      el.contentEditable = editing ? "true" : "false";
+      if (el.dataset.bound) return;
+      el.dataset.bound = "1";
+      el.addEventListener("input", function () {
+        store(+el.dataset.i, el.dataset.f, serialize(el));
+        setDirty(true);
+        countTodos();
+      });
+      el.addEventListener("paste", function (e) {
+        e.preventDefault();
+        var txt = (e.clipboardData || window.clipboardData).getData("text/plain");
+        document.execCommand("insertText", false, txt);
+      });
+    });
+  }
+
+  function todoEls() { return Array.prototype.slice.call(app.querySelectorAll(".ph, mark.todo")); }
+  function countTodos() {
+    var n = todoEls().length;
+    todoN.textContent = n;
+    todoBtn.hidden = n === 0;
+  }
+  todoBtn.addEventListener("click", function () {
+    var els = todoEls();
+    if (!els.length) return;
+    var next = els.filter(function (el) {
+      return anchorOf(el).getBoundingClientRect().top > window.innerHeight / 2 + 4;
+    })[0] || els[0];
+    reveal(next);
+    next.scrollIntoView({ block: "center", behavior: SMOOTH });
+    next.classList.remove("flash");
+    void next.offsetWidth;
+    next.classList.add("flash");
+  });
+
+  function setDirty(v) {
+    dirty = v;
+    saveBtn.disabled = !v || !artifact;
+    statusEl.textContent = v ? "Есть несохранённые правки" : "";
+    statusEl.className = v ? "status dirty" : "status";
+  }
+
+  editBtn.addEventListener("click", function () {
+    editing = !editing;
+    document.body.classList.toggle("editing", editing);
+    editBtn.setAttribute("aria-pressed", editing ? "true" : "false");
+    editBtn.textContent = editing ? "Правка включена" : "Режим правки";
+    wire();
+  });
+
+  function nextHTML() {
+    var json = JSON.stringify(DOC).replace(/</g, "\\u003c");
+    return SHELL.replace(
+      /(<script id="doc-data" type="application\/json">)[\s\S]*?(<\/script>)/,
+      function (m, a, b) { return a + json + b; }
+    );
+  }
+
+  saveBtn.addEventListener("click", function () {
+    if (!artifact) return;
+    saveBtn.disabled = true;
+    statusEl.className = "status";
+    statusEl.textContent = "Сохраняю…";
+    artifact.publish(nextHTML()).then(function () {
+      setDirty(false);
+      statusEl.textContent = "Правки сохранены";
+    }).catch(function (err) {
+      var code = err && err.code;
+      if (code === "conflict") {
+        statusEl.textContent = "Страницу изменили в другом окне — она сейчас перезагрузится";
+      } else if (code === "not_granted" || code === "not_writer") {
+        statusEl.textContent = "Здесь только просмотр — сохранять может владелец страницы";
+      } else {
+        statusEl.textContent = "Не удалось сохранить, попробуйте ещё раз";
+        statusEl.className = "status dirty";
+        saveBtn.disabled = false;
+      }
+    });
+  });
+
+  window.addEventListener("beforeunload", function (e) {
+    if (dirty) { e.preventDefault(); e.returnValue = ""; }
+  });
+
+  /* ---------- где я сейчас: подсветка в оглавлении ---------- */
+  var ticking = false;
+  function spy() {
+    ticking = false;
+    toTop.hidden = window.scrollY < 600;
+    var cur = null, curSec = null, LINE = 120;
+    app.querySelectorAll(".sec").forEach(function (sec) { if (sec.getBoundingClientRect().top < LINE) curSec = sec; });
+    if (curSec) {
+      cur = curSec;
+      curSec.querySelectorAll(".st").forEach(function (st) {
+        if (!st.offsetParent || st.parentElement.closest("[hidden]")) return;
+        if (st.getBoundingClientRect().top < LINE) cur = st;
+      });
+    }
+    document.querySelectorAll(".toc-l a").forEach(function (a) {
+      a.classList.toggle("on", !!cur && a.dataset.id === cur.id);
+      a.classList.toggle("in", !!curSec && a.dataset.id === curSec.id);
+    });
+    if (deskToc.offsetParent) {
+      var on = deskToc.querySelector("a.on");
+      if (on) {
+        var nr = deskToc.getBoundingClientRect(), r = on.getBoundingClientRect();
+        if (r.top < nr.top + 48 || r.bottom > nr.bottom - 24) deskToc.scrollTop += r.top - nr.top - nr.height / 3;
+      }
+    }
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(spy); }
+  }, { passive: true });
+
+  toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: SMOOTH }); });
+
+  render();
+  setDirty(false);
+  var fromLink = location.hash && document.getElementById(location.hash.slice(1));  // a shared #s12 link opens that item
+  if (fromLink && app.contains(fromLink)) { reveal(fromLink); fromLink.scrollIntoView({ block: "start" }); }
+  spy();
+
+  if (!window.claude || !claude.use) {
+    statusEl.textContent = "Локальный просмотр — сохранение недоступно";
+    return;
+  }
+  claude.use("artifact").then(function (a) {
+    artifact = a;
+    if (!a) statusEl.textContent = "Сохранение здесь недоступно — откройте страницу по своей ссылке";
+    saveBtn.disabled = !dirty || !a;
+  });
+})();
+</script>
+
+</body>
+</html>
