@@ -1,0 +1,848 @@
+<!doctype html>
+<!--
+  ПРОД — живая версия, деплоится автоматически на /epd-podpisi/ при пуше в main
+  (см. .github/workflows/deploy-epd-podpisi.yml). Черновик для правок и проверки —
+  тестовый-контур.html в этой же папке (в деплой не попадает).
+-->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Какая ЭЦП нужна</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f7f7f7;
+    --surface-3: #ededed;
+    --ink: #16181b;
+    --ink-dim: #53585f;
+    --ink-faint: #8a9098;
+    --border: #e6e6e6;
+    --border-strong: #cfcfcf;
+    --accent: #ff7322;
+    --accent-ink: #b3450c;
+    --accent-soft: #ffe9db;
+    --navy: #0c2a48;
+    --navy-2: #123f6c;
+    --navy-ink: #ffffff;
+    --good: #2f8f5b;
+    --good-soft: #e2f3ea;
+    --info: #2e6e95;
+    --info-soft: #e3eff6;
+    --warn: #a8690f;
+    --warn-soft: #fbead2;
+    --shadow: 0 1px 2px rgba(0,0,0,.05), 0 10px 28px -14px rgba(0,0,0,.16);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 9px;
+    --font-display: "Nunito Sans", "PT Sans", system-ui, sans-serif;
+    --font-body: "Roboto", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14181d;
+      --surface: #1b2129;
+      --surface-2: #212832;
+      --surface-3: #2a323d;
+      --ink: #eef1f4;
+      --ink-dim: #a7b0ba;
+      --ink-faint: #7a838e;
+      --border: #2c333d;
+      --border-strong: #3a4350;
+      --accent: #ff8a45;
+      --accent-ink: #ffcf8c;
+      --accent-soft: #3c2814;
+      --navy: #1c3a5c;
+      --navy-2: #2a5580;
+      --navy-ink: #ffffff;
+      --good: #57cc91;
+      --good-soft: #102a1e;
+      --info: #74bce6;
+      --info-soft: #102838;
+      --warn: #e3ac54;
+      --warn-soft: #362a16;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px -16px rgba(0,0,0,.65);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14181d;
+    --surface: #1b2129;
+    --surface-2: #212832;
+    --surface-3: #2a323d;
+    --ink: #eef1f4;
+    --ink-dim: #a7b0ba;
+    --ink-faint: #7a838e;
+    --border: #2c333d;
+    --border-strong: #3a4350;
+    --accent: #ff8a45;
+    --accent-ink: #ffcf8c;
+    --accent-soft: #3c2814;
+    --navy: #1c3a5c;
+    --navy-2: #2a5580;
+    --navy-ink: #ffffff;
+    --good: #57cc91;
+    --good-soft: #102a1e;
+    --info: #74bce6;
+    --info-soft: #102838;
+    --warn: #e3ac54;
+    --warn-soft: #362a16;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px -16px rgba(0,0,0,.65);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+
+  a { color: inherit; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ---- top bar ---- */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+    margin-bottom: 8px;
+  }
+  .topbar-inner {
+    max-width: 980px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 700; font-size: 14.5px;
+    color: var(--ink-dim); letter-spacing: .01em;
+  }
+  .brand img { height: 30px; display: block; }
+  .brand b { color: var(--ink); }
+  .topbar-tag {
+    font-size: 14px; color: var(--ink-faint); text-align: right; line-height: 1.4;
+    text-transform: uppercase; letter-spacing: .06em; font-weight: 600;
+  }
+
+  /* ---- hero ---- */
+  .hero { padding: 40px 0 8px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--accent-ink); background: var(--accent-soft);
+    padding: 6px 12px; border-radius: 999px; margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--font-display); font-size: clamp(28px, 4.4vw, 40px);
+    font-weight: 800; letter-spacing: -.01em; margin: 0 0 12px;
+    text-wrap: balance; color: var(--ink);
+  }
+  .hero p.lead {
+    font-size: 17px; color: var(--ink-dim); margin: 0;
+  }
+
+  /* ---- picker ---- */
+  .picker { margin: 36px 0 8px; display: grid; gap: 22px; }
+  .picker-row-label {
+    font-family: var(--font-display); font-weight: 700; font-size: 14px;
+    color: var(--ink-faint); text-transform: uppercase; letter-spacing: .07em;
+    margin-bottom: 10px; display: flex; align-items: baseline; gap: 8px;
+  }
+  .picker-row-label .step-dot {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--navy); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 14px; font-family: var(--font-mono); font-weight: 600;
+  }
+  .picker-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .opt-btn {
+    display: flex; align-items: flex-start; gap: 12px; text-align: left;
+    padding: 16px 16px; border-radius: var(--radius-md);
+    border: 1.5px solid var(--border); background: var(--surface);
+    cursor: pointer; font-family: var(--font-body); color: var(--ink);
+    transition: border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .opt-btn:hover { border-color: var(--border-strong); }
+  .opt-btn:active { transform: scale(.99); }
+  .opt-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .opt-btn[aria-pressed="true"] {
+    border-color: var(--accent); background: var(--accent-soft);
+  }
+  .opt-icon {
+    flex: none; width: 38px; height: 38px; border-radius: 10px;
+    background: var(--surface-2); display: flex; align-items: center; justify-content: center;
+    color: var(--ink-dim);
+  }
+  .opt-btn[aria-pressed="true"] .opt-icon { background: var(--accent); color: #fff; }
+  .opt-title { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+  .opt-desc { font-size: 14px; color: var(--ink-dim); line-height: 1.4; }
+
+  /* ---- result panel ---- */
+  .result {
+    margin-top: 34px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 30px 32px 8px;
+  }
+  .result-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 6px; }
+  .result-eyebrow {
+    font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 8px;
+  }
+  .result h2 {
+    font-family: var(--font-display); font-size: 24px; font-weight: 800;
+    margin: 0 0 10px; color: var(--ink); text-wrap: balance;
+  }
+  .result .lead { color: var(--ink-dim); font-size: 15px; max-width: 68ch; margin: 0 0 8px; }
+  .facts { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
+  .fact-chip {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600;
+    padding: 6px 11px; border-radius: 999px; background: var(--surface-2); color: var(--ink-dim);
+    font-family: var(--font-mono);
+  }
+  .fact-chip.good { background: var(--good-soft); color: var(--good); }
+  .fact-chip.warn { background: var(--warn-soft); color: var(--warn); }
+
+  .steps { margin-top: 14px; }
+  .step { display: grid; grid-template-columns: 36px 1fr; gap: 16px; padding: 20px 0; border-top: 1px solid var(--border); }
+  .step:first-child { border-top: none; padding-top: 8px; }
+  .step-num {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 14px; margin-top: 2px;
+  }
+  .step-title { font-family: var(--font-display); font-weight: 700; font-size: 16.5px; margin: 0 0 6px; color: var(--ink); }
+  .step-body { color: var(--ink-dim); font-size: 14.5px; }
+  .step-body p { margin: 6px 0; }
+  .step-body ul { margin: 6px 0; padding-left: 20px; }
+  .step-body li { margin: 3px 0; }
+  .step-body b { color: var(--ink); }
+  .step-shot { max-width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin: 6px 0 14px; display: block; box-shadow: var(--shadow); }
+  .step-body--intro { padding-top: 14px; }
+
+  .variant-block { margin-top: 14px; }
+  .variant-block:first-of-type { margin-top: 8px; }
+  .variant-head {
+    display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none;
+    padding: 14px 16px; border: 1.5px solid var(--border); border-radius: var(--radius-md);
+    background: var(--surface); transition: border-color .15s ease, background .15s ease;
+  }
+  .variant-head::-webkit-details-marker { display: none; }
+  .variant-head:hover { border-color: var(--border-strong); }
+  .variant-block[open] .variant-head { border-color: var(--accent); background: var(--accent-soft); border-radius: var(--radius-md) var(--radius-md) 0 0; }
+  .variant-badge {
+    flex: none; font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase; padding: 4px 11px; border-radius: 999px;
+    background: var(--navy); color: #fff;
+  }
+  .variant-head-label { font-family: var(--font-display); font-weight: 800; font-size: 15.5px; color: var(--ink); }
+  .variant-chevron { margin-left: auto; flex: none; display: flex; color: var(--ink-faint); transition: transform .15s ease; }
+  .variant-block[open] .variant-chevron { transform: rotate(180deg); color: var(--accent-ink); }
+  .variant-steps-wrap {
+    border: 1.5px solid var(--accent); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md);
+    padding: 4px 16px 6px;
+  }
+  .variant-block .steps { margin-top: 0; }
+  .variant-block .step:first-child { border-top: none; padding-top: 8px; }
+  .outro-block { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 18px; }
+
+  .checklist { margin: 6px 0; padding-left: 0; list-style: none; }
+  .checklist li { display: flex; gap: 8px; align-items: flex-start; margin: 5px 0; }
+  .checklist li svg { flex: none; margin-top: 3px; color: var(--good); }
+
+  .callout { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 11px 15px; font-size: 14px; margin: 10px 0; border-left: 3px solid; color: var(--ink); }
+  .callout.warn { background: var(--warn-soft); border-color: var(--warn); }
+  .callout.warn b { color: var(--warn); }
+  .callout.info { background: var(--info-soft); border-color: var(--info); }
+  .callout.info b { color: var(--info); }
+  .callout.pending { background: var(--surface-2); border-color: var(--ink-faint); }
+  .callout.pending b { color: var(--ink-dim); }
+
+  .linkrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .linkchip {
+    display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px;
+    border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 600;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .linkchip:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .linkchip svg { flex: none; }
+
+  .result-footline { padding: 18px 0 22px; border-top: 1px solid var(--border); margin-top: 6px; font-size: 14px; color: var(--ink-faint); }
+  .result-footline--nested { margin-top: 8px; }
+
+  /* ---- compare table ---- */
+  .section-head { margin: 56px 0 18px; }
+  .section-head h2 { font-family: var(--font-display); font-size: 21px; font-weight: 800; margin: 0 0 6px; }
+  .section-head p { color: var(--ink-dim); font-size: 14.5px; margin: 0; max-width: 68ch; }
+
+  .table-scroll { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
+  table.compare { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+  table.compare th, table.compare td { padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  table.compare thead th {
+    background: var(--navy); color: var(--navy-ink); font-family: var(--font-display);
+    font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: .04em;
+    position: sticky; top: 0;
+  }
+  table.compare thead th:first-child { background: var(--navy); width: 18%; }
+  table.compare tbody th {
+    background: var(--surface-2); font-family: var(--font-display); font-weight: 700;
+    color: var(--ink); white-space: nowrap; font-size: 14px;
+  }
+  table.compare tbody tr:last-child td, table.compare tbody tr:last-child th { border-bottom: none; }
+  table.compare td b { color: var(--ink); }
+  table.compare td .cell-sub { color: var(--ink-dim); font-size: 14px; display: block; margin-top: 3px; }
+  table.compare th .cell-sub { font-weight: 500; color: var(--ink-faint); }
+  table.compare tbody tr:nth-child(even) td, table.compare tbody tr:nth-child(even) th { background: color-mix(in srgb, var(--surface-2) 45%, transparent); }
+
+  /* ---- contacts ---- */
+  .contacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-top: 18px; }
+  .ccard { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; background: var(--surface); }
+  .ccard .cc-role { font-size: 14px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent-ink); font-weight: 700; margin-bottom: 7px; }
+  .ccard .cc-name { font-weight: 700; font-family: var(--font-display); font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .ccard .cc-line { font-size: 14px; color: var(--ink-dim); margin: 3px 0; }
+  .ccard .cc-line a { color: var(--ink-dim); text-decoration: none; }
+  .ccard .cc-line a:hover { color: var(--accent-ink); }
+
+  footer.page-footer {
+    margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--border);
+    font-size: 14px; color: var(--ink-faint); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+
+  @media (max-width: 620px) {
+    .picker-options { grid-template-columns: 1fr; }
+    .result { padding: 24px 20px 6px; }
+    .step { grid-template-columns: 30px 1fr; gap: 12px; }
+    .topbar-tag { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <img src="data:image/png;base64,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" alt="Платформа ЭПД">
+      <span><b>Платформа ЭПД</b> · подбор подписи</span>
+    </div>
+    <div class="topbar-tag">Электронные подписи<br>для перевозочных документов</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Подбор подписи за 2 клика</div>
+    <h1>Какая ЭЦП нужна?</h1>
+    <p class="lead">Для Платформы ЭПД нужна электронная подпись — видов несколько, у каждого своя. Отметьте, кто вы и где подписываете, — покажем, какая подпись нужна, где её получить и как всё настроить.</p>
+  </div>
+
+  <div class="picker">
+    <div>
+      <div class="picker-row-label"><span class="step-dot">1</span> Кто вы</div>
+      <div class="picker-options" id="row-who" role="group" aria-label="Кто вы">
+        <button type="button" class="opt-btn" data-group="who" data-value="ul" aria-pressed="true">
+          <span class="opt-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 8h2M14 8h2M8 12h2M14 12h2M8 16h2M14 16h2"/></svg>
+          </span>
+          <span>
+            <span class="opt-title">Юрлицо или ИП</span>
+            <span class="opt-desc">Директор компании или ИП — собственник бизнеса</span>
+          </span>
+        </button>
+        <button type="button" class="opt-btn" data-group="who" data-value="fl" aria-pressed="false">
+          <span class="opt-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1-3.6 4-5.6 7-5.6s6 2 7 5.6"/><rect x="14.3" y="13.6" width="6.2" height="4.6" rx="1" fill="currentColor" stroke="none" opacity=".18"/><rect x="14.3" y="13.6" width="6.2" height="4.6" rx="1"/></svg>
+          </span>
+          <span>
+            <span class="opt-title">Наёмный сотрудник</span>
+            <span class="opt-desc">Логист, диспетчер, бухгалтер или водитель по найму</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div class="picker-row-label"><span class="step-dot">2</span> Где подписываете</div>
+      <div class="picker-options" id="row-where" role="group" aria-label="Где подписываете">
+        <button type="button" class="opt-btn" data-group="where" data-value="office" aria-pressed="true">
+          <span class="opt-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M2 19.5h20"/><path d="M9 19.5l.6-3.5M15 19.5l-.6-3.5"/></svg>
+          </span>
+          <span>
+            <span class="opt-title">В офисе, с компьютера</span>
+            <span class="opt-desc">Подписываете через веб-кабинет на ноутбуке</span>
+          </span>
+        </button>
+        <button type="button" class="opt-btn" data-group="where" data-value="road" aria-pressed="false">
+          <span class="opt-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.2h2"/><path d="M17.5 7c1.3 1 1.3 4 0 5M19.6 5.3c2.2 1.8 2.2 6.6 0 8.4" stroke-linecap="round"/></svg>
+          </span>
+          <span>
+            <span class="opt-title">В дороге, с телефона</span>
+            <span class="opt-desc">Подписываете ЭТрН в рейсе, при погрузке или разгрузке</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="result" id="result" aria-live="polite"></div>
+
+  <div class="section-head">
+    <h2>Сравнить все варианты сразу</h2>
+    <p>Если проще увидеть всю картину целиком, а не по одному сценарию — вот сводная таблица по всем четырём случаям.</p>
+  </div>
+  <div class="table-scroll">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Юрлица (ИП, собственник компании)</th>
+          <th>Физлица (наёмные сотрудники)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>В офисе<br><span class="cell-sub">работает с ноутбука</span></th>
+          <td>
+            <b>УКЭП юрлица/ИП на токене</b>
+            <span class="cell-sub">той же подписью бухгалтер подписывает налоговую отчётность</span>
+            <span class="cell-sub">купить токен + записать подпись в УЦ — иногда продают прямо в налоговой</span>
+            <span class="cell-sub">на компьютер: КриптоПро CSP + Яндекс Браузер</span>
+          </td>
+          <td>
+            <b>УКЭП физлица на токене</b> — в любом аккредитованном УЦ
+            <span class="cell-sub">или бесплатно — <b>УКЭП физлица через Госключ</b></span>
+            <span class="cell-sub">+ обязательно МЧД от руководителя (бесплатно, в кабинете ЭПД)</span>
+          </td>
+        </tr>
+        <tr>
+          <th>В дороге<br><span class="cell-sub">работает с телефона</span></th>
+          <td>
+            <b>УКЭП юрлица/ИП на токене с NFC</b>
+            <span class="cell-sub">купить токен с NFC заранее (в налоговой такие не продают) и записать подпись в УЦ ФНС</span>
+          </td>
+          <td>
+            <b>УКЭП физлица через Госключ</b> — бесплатно, в МФЦ, банке или дистанционно
+            <span class="cell-sub">+ обязательно МЧД от руководителя (бесплатно, в кабинете ЭПД)</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-head">
+    <h2>Поддержка и контакты</h2>
+    <p>Куда обращаться на каждом шаге.</p>
+  </div>
+  <div class="contacts">
+    <div class="ccard">
+      <div class="cc-role">Заказ токена</div>
+      <div class="cc-name">Обычный или с NFC</div>
+      <div class="cc-line"><a href="tel:+74955408955">+7 (495) 540-89-55</a></div>
+      <div class="cc-line"><a href="mailto:info@platformatd.ru">info@platformatd.ru</a></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-role">Оформление УКЭП</div>
+      <div class="cc-name">Партнёр — УЦ «Основание»</div>
+      <div class="cc-line"><a href="https://platformaofd.ru/services/kep/">platformaofd.ru/services/kep</a></div>
+      <div class="cc-line">Подходит любой аккредитованный УЦ</div>
+    </div>
+    <div class="ccard">
+      <div class="cc-role">Общие вопросы</div>
+      <div class="cc-name">Вопросы и консультации по ЭПД</div>
+      <div class="cc-line"><a href="tel:+74952525050">+7 (495) 252-50-50</a></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-role">Техподдержка</div>
+      <div class="cc-name">Технические вопросы по настройке</div>
+      <div class="cc-line"><a href="mailto:epd@platformaofd.ru">epd@platformaofd.ru</a></div>
+      <div class="cc-line">В письме — ИНН, телефон, скриншот проблемы</div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <span>Платформа ЭПД · ООО «Эвотор ОФД» — база знаний</span>
+    <span>Собрано из внутренних инструкций по УКЭП, РуТокен NFC и Госключу</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  // Что выбрал пользователь в переключателях выше (кнопки #row-who / #row-where).
+  const state = { who: 'ul', where: 'office' };
+
+  const ICON = {
+    check: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>',
+    link: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1"/><path d="M14 10a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1"/></svg>',
+    chevron: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>'
+  };
+
+  function link(href, label) {
+    return '<a class="linkchip" href="' + href + '" target="_blank" rel="noopener">' + ICON.link + label + '</a>';
+  }
+
+  // Рендерит нумерованный список шагов. Используется и для сценариев с одним
+  // набором шагов (d.steps), и для каждого варианта внутри сценариев с
+  // несколькими вариантами (d.variants) — см. renderResult() ниже.
+  function renderSteps(steps) {
+    return steps.map(function (s, i) {
+      return '<div class="step">' +
+        '<div class="step-num">' + (i + 1) + '</div>' +
+        '<div><div class="step-title">' + s.title + '</div><div class="step-body">' + s.body + '</div></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // Блок «Оформите МЧД от руководителя» — общий для обоих сценариев сотрудника
+  // (fl-office и fl-road), текст в них идентичен, поэтому вынесен сюда одним куском.
+  const MCHD_BLOCK =
+    '<details class="variant-block">' +
+      '<summary class="variant-head"><span class="variant-badge">Обязательно</span><span class="variant-head-label">Оформите МЧД от руководителя</span><span class="variant-chevron">' + ICON.chevron + '</span></summary>' +
+      '<div class="variant-steps-wrap">' +
+        '<div class="step-body step-body--intro"><p>Оформляется бесплатно, за пару минут, прямо в личном кабинете — нужна только УКЭП руководителя на токене.</p></div>' +
+        '<div class="steps">' +
+          '<div class="step"><div class="step-num">1</div><div><div class="step-title">Откройте раздел «МЧД» и нажмите «Создать»</div><div class="step-body">' +
+            '<img class="step-shot" src="скриншоты-мчд/01-переход-в-раздел-мчд.png" alt="В личном кабинете Платформы ЭПД — переход в раздел «МЧД»">' +
+            '<img class="step-shot" src="скриншоты-мчд/02-создать-доверенность.png" alt="Раздел «МЧД» — кнопка «Создать»">' +
+            '<p>В личном кабинете перейдите во вкладку «МЧД» → «Создать доверенность». Нужна электронная подпись руководителя на токене.</p>' +
+          '</div></div></div>' +
+          '<div class="step"><div class="step-num">2</div><div><div class="step-title">Заполните сведения о представляемом лице</div><div class="step-body">' +
+            '<img class="step-shot" src="скриншоты-мчд/03-сведения-о-представляемом-лице.png" alt="Форма «Сведения о представляемом лице»">' +
+            '<img class="step-shot" src="скриншоты-мчд/04-выбор-сертификата-компании.png" alt="Окно выбора сертификата компании для автозаполнения">' +
+            '<p>Это данные организации, которая выдаёт доверенность. Нажмите «Заполнить из сертификата» — часть полей заполнится сама. Проверьте их и заполните остальное.</p>' +
+          '</div></div></div>' +
+          '<div class="step"><div class="step-num">3</div><div><div class="step-title">Заполните сведения об уполномоченном представителе</div><div class="step-body">' +
+            '<img class="step-shot" src="скриншоты-мчд/05-сведения-об-уполномоченном-представителе.png" alt="Форма «Сведения об уполномоченном представителе», вкладка «Физ. лицо»">' +
+            '<p>Представитель — сотрудник, на имя которого выпускается доверенность. Выберите «Физ. лицо», укажите ФИО, СНИЛС, ИНН и паспортные данные, нажмите «Далее».</p>' +
+          '</div></div></div>' +
+          '<div class="step"><div class="step-num">4</div><div><div class="step-title">Укажите срок действия и полномочия</div><div class="step-body">' +
+            '<img class="step-shot" src="скриншоты-мчд/06-сведения-о-доверенности.png" alt="Блок «Сведения о доверенности» — срок действия и внутренний номер">' +
+            '<img class="step-shot" src="скриншоты-мчд/07-полномочия-в-свободной-форме.png" alt="Поле «Полномочия в свободной форме»">' +
+            '<p>Заполните срок действия и внутренний номер — подойдёт любой, например из вашей учётной системы. В «Полномочиях в свободной форме» напишите: <b>«подписание электронных перевозочных документов»</b>.</p>' +
+          '</div></div></div>' +
+          '<div class="step"><div class="step-num">5</div><div><div class="step-title">Подпишите доверенность и передайте сотруднику</div><div class="step-body">' +
+            '<img class="step-shot" src="скриншоты-мчд/08-ждут-подписания.png" alt="Раздел «Ждут подписания»">' +
+            '<img class="step-shot" src="скриншоты-мчд/09-подписание-доверенностей.png" alt="Окно «Подписание доверенностей» — выбор сертификата и кнопка «Подписать»">' +
+            '<p>Нажмите «Отправить на подпись» → «Ждут подписания» → выберите доверенность и подпишите своей УКЭП. Скачайте её и пришлите уникальный номер сотруднику.</p>' +
+          '</div></div></div>' +
+        '</div>' +
+        '<div class="result-footline result-footline--nested">Готово — пока доверенность действует, сотрудник может подписывать документы от лица компании.</div>' +
+      '</div>' +
+    '</details>';
+
+  // Ключ записи ниже — это "<data-value кнопки 'Кто вы'>-<data-value кнопки 'Где
+  // подписываете'>" (см. кнопки #row-who и #row-where в разметке выше). Если добавляете
+  // новую кнопку в один из этих рядов — добавьте и записи под новыми ключами здесь,
+  // иначе renderResult() не найдёт данные для нового сочетания и ничего не отрисует
+  // (есть защитная проверка ниже, она выведет ошибку в консоль вместо падения страницы).
+  //
+  // Важно: инструкции по настройке КриптоПро (Яндекс Браузер + КриптоПро CSP + плагин)
+  // и по получению подписи через Госключ почти дословно повторяются в нескольких сценариях
+  // ниже (КриптоПро — в ul-office, ul-road и fl-office; Госключ — в fl-office и fl-road).
+  // Это осознанно НЕ вынесено в общую переменную по образцу MCHD_BLOCK: эти блоки нужны
+  // не во всех сценариях, и общий кусок рискует случайно попасть туда, где он не нужен.
+  // При правке текста меняйте каждое место по отдельности.
+  const DATA = {
+    'ul-office': {
+      eyebrow: 'Юрлицо / ИП · в офисе',
+      title: 'УКЭП юрлица (или ИП) на обычном токене',
+      lead: 'Универсальная подпись директора или ИП — ей же подписывают и налоговую отчётность, не только ЭПД.',
+      facts: [ { t: '15 месяцев', c: '' }, { t: 'запись подписи бесплатно', c: 'good' } ],
+      steps: [
+        {
+          title: 'Купите токен',
+          body: '<p>Сертифицированный USB-токен (ФСТЭК или ФСБ) — в интернет-магазинах, у производителей или в налоговой.</p>' +
+                link('https://www.gosuslugi.ru/help/faq/esignature/119200', 'Требования к сертификации')
+        },
+        {
+          title: 'Запишите подпись',
+          body: '<p>Варианты на выбор:</p><ul>' +
+                '<li>Очно в удостоверяющем центре (УЦ) ФНС — бесплатно: паспорт, СНИЛС, ИНН, токен</li>' +
+                '<li>Дистанционно по биометрии — Госуслуги + Единая биометрическая система, дальше в личном кабинете на сайте ФНС</li>' +
+                '<li>Через доверенные лица ФНС — например, банки (Сбербанк, ВТБ, Т-Банк)</li>' +
+                '<li>В любом коммерческом аккредитованном УЦ — например, наш партнёр «Основание»</li>' +
+                '</ul>' +
+                link('https://www.gosuslugi.ru/help/faq/esignature/119160', 'Адреса УЦ ФНС') +
+                link('https://platformaofd.ru/services/kep/', 'УЦ «Основание»') +
+                link('https://www.nalog.gov.ru/rn77/related_activities/ucfns/dlucfns/', 'Реестр аккредитованных УЦ')
+        },
+        {
+          title: 'Настройте компьютер',
+          body: '<img class="step-shot" src="скриншоты-настройка-криптопро/01-настройка-компьютера.png" alt="Как настроить компьютер для работы с УКЭП на токене: Яндекс Браузер, КриптоПро CSP, браузерный плагин">' +
+                '<p>Установите три компонента:</p><ul>' +
+                '<li><b>Яндекс Браузер</b> — лучше всего работает с электронными подписями</li>' +
+                '<li><b>КриптоПро CSP</b> — версия 5.0 R3 или выше (бесплатный пробный период 90 дней)</li>' +
+                '<li><b>КриптоПро ЭЦП Browser plug-in</b> — расширение для подписания на веб-страницах</li>' +
+                '</ul>' +
+                link('https://browser.yandex.ru/', 'Яндекс Браузер') +
+                link('https://www.cryptopro.ru/products/csp/downloads', 'КриптоПро CSP') +
+                link('http://cryptopro.ru/products/cades/plugin', 'Браузерный плагин')
+        },
+        {
+          title: 'Проверьте, что всё работает',
+          body: '<img class="step-shot" src="скриншоты-настройка-криптопро/02-проверка-настройки.png" alt="Как проверить, что всё настроено правильно: через плагин браузера, диагностическую страницу КриптоПро или тестовое подписание">' +
+                '<p>Нажмите значок плагина у адресной строки → «Проверить работу плагина». Или откройте диагностическую страницу КриптоПро (все пункты зелёные), или подпишите любой документ в Платформе ЭПД.</p>' +
+                link('https://www.cryptopro.ru/sites/default/files/products/cades/demopage/cades_bes_sample.html', 'Диагностическая страница')
+        }
+      ],
+      note: 'Подробная инструкция: настройка-криптопро-для-эцп.md'
+    },
+    'ul-road': {
+      eyebrow: 'Юрлицо / ИП · в дороге',
+      title: 'УКЭП юрлица (или ИП) на токене с NFC',
+      lead: 'Та же подпись директора или ИП, но на токене с NFC — чтобы подписывать ЭТрН в рейсе, приложив токен к телефону.',
+      facts: [ { t: '3 730 ₽ токен', c: '' }, { t: 'запись подписи бесплатно', c: 'good' }, { t: 'Android и iPhone', c: 'good' } ],
+      steps: [
+        {
+          title: 'Перейдите по ссылке и добавьте токен в корзину',
+          body: '<img class="step-shot" src="скриншоты-заказ-эцп/01-товар-рутокен-nfc-в-корзину.png" alt="Карточка товара — нажмите «В корзину»">' +
+                '<p>Нужен <b>Рутокен ЭЦП 3.0 NFC 3100, серт. ФСБ</b> — 3 730 ₽, доставка включена. В налоговой такие не продают — купите заранее, до похода в УЦ.</p>' +
+                link('https://platformatd.ru/tokeny/rutoken-ecp-3-0-3100-nfc-slim-a/', 'Заказать РуТокен NFC')
+        },
+        {
+          title: 'Авторизуйтесь в личном кабинете',
+          body: '<img class="step-shot" src="скриншоты-заказ-эцп/02-вход-и-регистрация.png" alt="Экран входа — если аккаунта нет, нажмите «Зарегистрироваться»">' +
+                '<img class="step-shot" src="скриншоты-заказ-эцп/03-форма-регистрации.png" alt="Форма регистрации: телефон, почта, пароль, ИНН">' +
+                '<p>Уже зарегистрированы на Платформе ЭПД — войдите тем же логином и паролем. Если нет — нажмите «Зарегистрироваться» и укажите почту, телефон, ИНН и пароль.</p>' +
+                '<div class="callout info"><b>Важно:</b> это тот же аккаунт — с этими данными вы войдёте и в Платформу ЭПД.</div>'
+        },
+        {
+          title: 'Оформите доставку и оплатите заказ',
+          body: '<img class="step-shot" src="скриншоты-заказ-эцп/04-адрес-доставки-и-заказ.png" alt="Контактное лицо, телефон, адрес доставки и комментарий к заказу">' +
+                '<p>Укажите телефон контактного лица. Адрес выбирайте из списка, начиная с города, — так он сохранится точно. Не получается выбрать полный адрес — укажите город, а улицу, дом и квартиру впишите в «Комментарии к заказу». Нажмите «Заказать».</p>' +
+                '<img class="step-shot" src="скриншоты-заказ-эцп/05-оплата-заказа.png" alt="Оплата — по счёту или картой">' +
+                '<p>Оплатите — по счёту или картой; обычно сразу, иногда до 3 рабочих дней. После оплаты вышлем токен, на странице заказа появится трек-номер для отслеживания.</p>'
+        },
+        {
+          title: 'Запишите подпись в УЦ ФНС',
+          body: '<p>Очно, бесплатно. Возьмите с собой:</p>' +
+                '<ul class="checklist">' +
+                '<li>' + ICON.check + '<span>Оригинал паспорта РФ (копии не принимаются)</span></li>' +
+                '<li>' + ICON.check + '<span>СНИЛС (номер или оригинал)</span></li>' +
+                '<li>' + ICON.check + '<span>ИНН предпринимателя (достаточно знать номер)</span></li>' +
+                '<li>' + ICON.check + '<span>Купленный токен + сертификат на него (распечатать с сайта производителя, если нет в коробке)</span></li>' +
+                '</ul>'
+        },
+        {
+          title: 'Настройте телефон',
+          body: '<div class="callout info"><b>Включите NFC на телефоне.</b> На Android: Настройки → Настройки подключения → NFC. На iPhone NFC включён всегда.</div>' +
+                '<p>Больше на телефон ничего скачивать не нужно — документы подписываются прямо в приложении «Платформа ЭПД».</p>'
+        },
+        {
+          title: 'Если нужно подписывать и с компьютера',
+          body: '<p>Тот же токен работает и как обычный USB-токен. Настройте компьютер:</p>' +
+                '<img class="step-shot" src="скриншоты-настройка-криптопро/01-настройка-компьютера.png" alt="Как настроить компьютер для работы с УКЭП на токене: Яндекс Браузер, КриптоПро CSP, браузерный плагин">' +
+                '<p>Установите три компонента: <b>Яндекс Браузер</b>, <b>КриптоПро CSP</b> (версия 5.0 R3 или выше) и <b>КриптоПро ЭЦП Browser plug-in</b>.</p>' +
+                link('https://browser.yandex.ru/', 'Яндекс Браузер') +
+                link('https://www.cryptopro.ru/products/csp/downloads', 'КриптоПро CSP') +
+                link('http://cryptopro.ru/products/cades/plugin', 'Браузерный плагин') +
+                '<img class="step-shot" src="скриншоты-настройка-криптопро/02-проверка-настройки.png" alt="Как проверить, что всё настроено правильно: через плагин браузера, диагностическую страницу КриптоПро или тестовое подписание">' +
+                '<p>Проверить: значок плагина в браузере → «Проверить работу плагина», диагностическая страница КриптоПро (все пункты зелёные) или тестовое подписание документа в Платформе ЭПД.</p>' +
+                link('https://www.cryptopro.ru/sites/default/files/products/cades/demopage/cades_bes_sample.html', 'Диагностическая страница')
+        }
+      ],
+      note: 'Подробная инструкция: эцп-рутокен-nfc-для-эпд.md'
+    },
+    'fl-office': {
+      eyebrow: 'Сотрудник · в офисе',
+      title: 'УКЭП физического лица',
+      lead: 'Личная подпись сотрудника — логиста, диспетчера, бухгалтера, — подтверждённая доверенностью от руководителя.',
+      facts: [ { t: 'нужна МЧД', c: 'warn' }, { t: 'можно бесплатно', c: 'good' } ],
+      intro: '<div class="step-body">' +
+             '<p>Оформить можно <b>Госключом</b> (бесплатно) или на физическом токене, например <b>РуТокеном</b> (платно). Ниже — обе инструкции, выберите любую.</p>' +
+             '</div>',
+      variants: [
+        {
+          label: 'Вариант 1',
+          desc: 'Госключ — бесплатно',
+          steps: [
+            {
+              title: 'Получите подпись',
+              body: '<p>Скачайте «Госуслуги» и «Госключ», войдите под подтверждённой учётной записью с указанным СНИЛС. Получите сертификат УКЭП одним из способов:</p><ul>' +
+                    '<li>Очно — в МФЦ или банке-партнёре</li>' +
+                    '<li>Дистанционно — загранпаспорт нового образца + телефон с NFC</li>' +
+                    '<li>Через подтверждённую биометрию</li>' +
+                    '</ul>' +
+                    '<img class="step-shot" src="скриншоты-госключ/04-способы-получения-укэп.png" alt="Способы получения сертификата УКЭП в Госключе: загранпаспорт+NFC, подтверждённая биометрия, МФЦ или банк-партнёр">'
+            },
+            {
+              title: 'Подключите Госключ к Платформе ЭПД',
+              body: '<p>С компьютера откройте «Мои данные» в личном кабинете.</p>' +
+                    '<img class="step-shot" src="скриншоты-госключ/01-переход-в-мои-данные.png" alt="Переход в раздел «Мои данные» в Платформе ЭПД">' +
+                    '<p>В блоке «Электронная подпись» нажмите «Подключить Госключ».</p>' +
+                    '<img class="step-shot" src="скриншоты-госключ/02-подключить-госключ.png" alt="Блок «Электронная подпись» — кнопка «Подключить Госключ»">' +
+                    '<p>Пройдите мастер из трёх шагов: скачать приложение (если ещё не установлено) → получить сертификат УКЭП → включить тумблер «Подписывать документы в приложении Госключ» и сохранить.</p>' +
+                    '<img class="step-shot" src="скриншоты-госключ/03-скачать-приложение.png" alt="Шаг 1 из 3 — скачать приложение «Госключ» по QR-коду">' +
+                    '<img class="step-shot" src="скриншоты-госключ/05-включить-в-личном-кабинете.png" alt="Шаг 3 из 3 — тумблер «Включить возможность подписывать документы в приложении Госключ» и кнопка «Сохранить»">' +
+                    '<div class="callout info">Если Госключ уже настроен и сертификат УКЭП действующий — можно сразу переходить к подписанию.</div>'
+            },
+            {
+              title: 'Подпишите документ с компьютера',
+              body: '<p>Откройте карточку нужного документа и нажмите «Подписать».</p>' +
+                    '<img class="step-shot" src="скриншоты-госключ/06-выбор-документа.png" alt="Список транспортных накладных — выбор документа для подписания">' +
+                    '<img class="step-shot" src="скриншоты-госключ/07-кнопка-подписать.png" alt="Карточка документа — кнопка «Подписать»">' +
+                    '<p>В открывшемся окне выберите вкладку «Госключ», проверьте ФИО и СНИЛС и нажмите «Отправить на подпись».</p>' +
+                    '<img class="step-shot" src="скриншоты-госключ/08-вкладка-госключ.png" alt="Окно «Квалифицированная электронная подпись» — вкладка «Госключ» с данными подписанта">' +
+                    '<img class="step-shot" src="скриншоты-госключ/09-отправлено-в-госключ.png" alt="Уведомление: документ успешно отправлен в Госключ, подписать нужно в течение 24 часов">' +
+                    '<img class="step-shot" src="скриншоты-госключ/10-статус-ожидает-госключ.png" alt="Статус документа сменился на «Ожидает Госключ»">' +
+                    '<div class="callout warn">Подписать нужно <b>в течение 24 часов</b> с момента отправки — иначе документ придётся отправлять на подпись заново.</div>'
+            }
+          ]
+        },
+        {
+          label: 'Вариант 2',
+          desc: 'РуТокен — платно',
+          steps: [
+            {
+              title: 'Получите подпись',
+              body: '<p>Купите сертифицированный USB-токен (ФСТЭК или ФСБ), например РуТокен, — в интернет-магазинах или у производителей. Запишите на него личную подпись в любом аккредитованном УЦ — например, наш партнёр «Основание».</p>' +
+                    '<div class="callout info"><b>УЦ ФНС сотрудникам подпись не выдаёт</b> — только руководителю, ИП или нотариусу. Нужен именно коммерческий УЦ.</div>' +
+                    link('https://platformaofd.ru/services/kep/', 'УЦ «Основание»')
+            },
+            {
+              title: 'Настройте компьютер',
+              body: '<img class="step-shot" src="скриншоты-настройка-криптопро/01-настройка-компьютера.png" alt="Как настроить компьютер для работы с УКЭП на токене: Яндекс Браузер, КриптоПро CSP, браузерный плагин">' +
+                    '<p>Установите три компонента: Яндекс Браузер, КриптоПро CSP (5.0 R3 или выше) и КриптоПро ЭЦП Browser plug-in.</p>' +
+                    link('https://browser.yandex.ru/', 'Яндекс Браузер') +
+                    link('https://www.cryptopro.ru/products/csp/downloads', 'КриптоПро CSP')
+            },
+            {
+              title: 'Проверьте, что всё работает',
+              body: '<img class="step-shot" src="скриншоты-настройка-криптопро/02-проверка-настройки.png" alt="Как проверить, что всё настроено правильно: через плагин браузера, диагностическую страницу КриптоПро или тестовое подписание">' +
+                    '<p>Попробуйте подписать любой документ в Платформе ЭПД — выберите сертификат и нажмите «Подписать». Если подпись создалась, всё настроено верно.</p>'
+            }
+          ]
+        }
+      ],
+      outro: '<div class="step-body outro-block">' +
+             '<p><b>В любом варианте</b> нужна МЧД от руководителя — она даёт сотруднику право подписывать документы от лица компании.</p>' +
+             '</div>' +
+             MCHD_BLOCK,
+      note: 'Подробная инструкция: настройка-криптопро-для-эцп.md, раздел «Для работы сотрудников»'
+    },
+    'fl-road': {
+      eyebrow: 'Сотрудник / водитель · в дороге',
+      title: 'УКЭП физического лица через Госключ',
+      lead: 'Бесплатная подпись для водителей и сотрудников, подписывающих ЭТрН в рейсе — выпускается в «Госключе», без токена.',
+      facts: [ { t: 'бесплатно', c: 'good' }, { t: '1 год', c: '' }, { t: 'нужна МЧД', c: 'warn' } ],
+      steps: [
+        {
+          title: 'Оформите подпись в Госключе',
+          body: '<p>Скачайте «Госуслуги» и «Госключ», авторизуйтесь под подтверждённой учётной записью с указанным СНИЛС. Получите сертификат УКЭП одним из способов:</p><ul>' +
+                '<li>Очно — в МФЦ или банке-партнёре</li>' +
+                '<li>Дистанционно — загранпаспорт нового образца + телефон с NFC</li>' +
+                '<li>Через подтверждённую биометрию</li>' +
+                '</ul>' +
+                '<img class="step-shot" src="скриншоты-госключ/04-способы-получения-укэп.png" alt="Способы получения сертификата УКЭП в Госключе: загранпаспорт+NFC, подтверждённая биометрия, МФЦ или банк-партнёр">' +
+                '<div class="callout info">Сертификат, выпущенный в Госключе, действует <b>1 год</b>.</div>'
+        },
+        {
+          title: 'Получите МЧД от руководителя',
+          body: '<p>Руководитель бесплатно выпускает доверенность в личном кабинете — без неё Госключ не даст подписывать документы от лица компании.</p>' +
+                MCHD_BLOCK
+        },
+        {
+          title: 'Настройте телефон',
+          body: '<p>Скачайте приложение «Платформа ЭПД» (RuStore/AppStore), войдите под логином и паролем, заполните СНИЛС и ИНН в «Моих данных».</p>'
+        },
+        {
+          title: 'Подпишите документ в приложении',
+          body: '<p>Откройте нужный документ в приложении «Платформа ЭПД».</p>' +
+                '<img class="step-shot" src="скриншоты-госключ/15-список-документов-моб.png" alt="Список ЭТрН в мобильном приложении «Платформа ЭПД»">' +
+                '<p>Нажмите «Принять без замечаний», затем — «Подписать».</p>' +
+                '<img class="step-shot" src="скриншоты-госключ/16-принять-без-замечаний.png" alt="Карточка документа — кнопка «Принять без замечаний»">' +
+                '<p>Выберите способ подписания «Госключ» УКЭП, проверьте, что выбран нужный документ, и нажмите «Отправить в Госключ».</p>' +
+                '<img class="step-shot" src="скриншоты-госключ/17-способ-подписания-госключ.png" alt="Выбор способа подписания — «Госключ» УКЭП">' +
+                '<img class="step-shot" src="скриншоты-госключ/18-отправить-в-госключ.png" alt="Документы готовы к отправке — кнопка «Отправить в Госключ», подписать нужно в течение 24 часов">' +
+                '<div class="callout warn">Подписать нужно <b>в течение 24 часов</b> — иначе документ придётся отправлять заново.</div>'
+        },
+        {
+          title: 'Подтвердите подпись в Госключе',
+          body: '<div class="callout info"><b>Здесь всё автоматически:</b> приложение само предложит кнопку «Перейти в Госключ» — искать вручную не нужно.</div>' +
+                '<img class="step-shot" src="скриншоты-госключ/19-перейти-в-госключ.png" alt="Документы отправлены в Госключ — кнопка «Перейти в Госключ»">' +
+                '<p>В приложении Госключ (или Госуслуги) откроется раздел документов от ООО «Эвотор» — ознакомьтесь с документом.</p>' +
+                '<img class="step-shot" src="скриншоты-госключ/11-раздел-эвотор-моб.png" alt="Раздел документов от ООО «Эвотор» в приложении Госключ/Госуслуги">' +
+                '<p>Включите тумблер «Я ознакомился и готов подписать документы» и нажмите «Подписать».</p>' +
+                '<img class="step-shot" src="скриншоты-госключ/12-документ-к-подписанию.png" alt="Документ для подписания — тумблер согласия ещё выключен, кнопка «Подписать» неактивна">' +
+                '<img class="step-shot" src="скриншоты-госключ/13-документ-подписан-веб.png" alt="Тумблер согласия включён — кнопка «Подписать» активна">' +
+                '<img class="step-shot" src="скриншоты-госключ/14-документы-подписаны.png" alt="Документы подписаны">'
+        }
+      ],
+      note: 'Госключ и «Платформа ЭПД» — два разных приложения на телефоне, нужны оба.'
+    }
+  };
+
+  function renderResult() {
+    const key = state.who + '-' + state.where;
+    const d = DATA[key];
+    if (!d) {
+      console.error('Нет записи в DATA для сценария "' + key + '" — проверьте data-value кнопок и ключи в DATA.');
+      return;
+    }
+    const el = document.getElementById('result');
+
+    const factsHtml = d.facts.map(function (f) {
+      return '<span class="fact-chip' + (f.c ? ' ' + f.c : '') + '">' + (f.c === 'good' ? ICON.check : '') + f.t + '</span>';
+    }).join('');
+
+    let bodyHtml;
+    if (d.variants) {
+      const variantsHtml = d.variants.map(function (v) {
+        return '<details class="variant-block">' +
+          '<summary class="variant-head"><span class="variant-badge">' + v.label + '</span><span class="variant-head-label">' + v.desc + '</span><span class="variant-chevron">' + ICON.chevron + '</span></summary>' +
+          '<div class="variant-steps-wrap"><div class="steps">' + renderSteps(v.steps) + '</div></div>' +
+          '</details>';
+      }).join('');
+      bodyHtml = (d.intro || '') + variantsHtml + (d.outro || '');
+    } else {
+      bodyHtml = '<div class="steps">' + renderSteps(d.steps) + '</div>';
+    }
+
+    el.style.opacity = '0';
+    setTimeout(function () {
+      el.innerHTML =
+        '<div class="result-top"><div><div class="result-eyebrow">' + d.eyebrow + '</div>' +
+        '<h2>' + d.title + '</h2>' +
+        '<p class="lead">' + d.lead + '</p>' +
+        '<div class="facts">' + factsHtml + '</div>' +
+        '</div></div>' +
+        bodyHtml +
+        '<div class="result-footline">' + d.note + '</div>';
+      el.style.opacity = '1';
+    }, 90);
+  }
+
+  function wireRow(rowId, groupName) {
+    const row = document.getElementById(rowId);
+    const buttons = row.querySelectorAll('.opt-btn');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+        btn.setAttribute('aria-pressed', 'true');
+        state[groupName] = btn.getAttribute('data-value');
+        renderResult();
+      });
+    });
+  }
+
+  document.getElementById('result').style.transition = 'opacity .15s ease';
+  wireRow('row-who', 'who');
+  wireRow('row-where', 'where');
+  renderResult();
+})();
+</script>
+</body>
+</html>
