@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}#status,#edit,#save,#next-todo{display:none!important}</style>
+<title>Электронные накладные: инструкция для водителя</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+/* Colour roles (Masha, 2026-09-14):
+   - path A = warm apricot, path B = cool blue — the only two tinted backgrounds;
+   - callouts never tint: "warn" is a filled navy card (loud), "info"/"promo" a white bordered card (quiet),
+     so neither blends with a path background;
+   - pink is reserved for draft marks (todo, screenshot placeholders) and never used for content;
+   - brand orange is UI only: primary buttons, active item in the contents. */
+:root {
+  --ground: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f3f5f8;
+  --ink: #1e2b38;
+  --ink-2: #475563;
+  --muted: #6b7886;
+  --faded: #9aa4ae;
+  --line: #dde3ea;
+  --line-soft: #edf0f4;
+  --accent: #f0a03a;
+  --accent-ink: #a3580a;
+  --on-accent: #1f1405;
+  --link: #1f63a0;
+  --a-bg: #fdf1e7;
+  --a-line: #f1d7c2;
+  --a-ink: #a94e17;
+  --a-chip: #a94e17;
+  --a-chip-ink: #ffffff;
+  --b-bg: #ecf3fb;
+  --b-line: #cddff0;
+  --b-ink: #1f5f9a;
+  --b-chip: #1f5f9a;
+  --b-chip-ink: #ffffff;
+  --warn-bg: #1d3557;
+  --warn-text: #e6eef7;
+  --warn-strong: #ffffff;
+  --warn-icon: #f5b544;
+  --warn-link: #a9d4ff;
+  --note-bg: #ffffff;
+  --note-line: #cbd5df;
+  --note-icon: #1f63a0;
+  --num-bg: #1e2b38;
+  --num-ink: #ffffff;
+  --mark-bg: #fbe1f0;
+  --mark-line: #e2a1c7;
+  --mark-ink: #8a1a5e;
+  --edit-ring: #e58a17;
+  --shadow: 0 1px 2px rgba(30,43,56,.06), 0 8px 22px -16px rgba(30,43,56,.3);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #13171b;
+    --surface: #1b2026;
+    --surface-2: #232931;
+    --ink: #e6ebf0;
+    --ink-2: #bcc6d0;
+    --muted: #8a96a2;
+    --faded: #66717c;
+    --line: #333b44;
+    --line-soft: #272e36;
+    --accent: #f0a03a;
+    --accent-ink: #f3b465;
+    --on-accent: #1f1405;
+    --link: #8ec3ee;
+    --a-bg: #2a211b;
+    --a-line: #4a3628;
+    --a-ink: #f1ab7c;
+    --a-chip: #f1ab7c;
+    --a-chip-ink: #2a1a0e;
+    --b-bg: #17212c;
+    --b-line: #2a3c4f;
+    --b-ink: #8ec3ee;
+    --b-chip: #8ec3ee;
+    --b-chip-ink: #0f1c28;
+    --warn-bg: #22406b;
+    --warn-text: #e9f1f9;
+    --warn-strong: #ffffff;
+    --warn-icon: #f5b544;
+    --warn-link: #b3dbff;
+    --note-bg: #1b2026;
+    --note-line: #3b4652;
+    --note-icon: #8ec3ee;
+    --num-bg: #dfe6ec;
+    --num-ink: #13171b;
+    --mark-bg: #4a1f3a;
+    --mark-line: #8a4271;
+    --mark-ink: #f6c1e1;
+    --edit-ring: #f0a03a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #13171b;
+  --surface: #1b2026;
+  --surface-2: #232931;
+  --ink: #e6ebf0;
+  --ink-2: #bcc6d0;
+  --muted: #8a96a2;
+  --faded: #66717c;
+  --line: #333b44;
+  --line-soft: #272e36;
+  --accent: #f0a03a;
+  --accent-ink: #f3b465;
+  --on-accent: #1f1405;
+  --link: #8ec3ee;
+  --a-bg: #2a211b;
+  --a-line: #4a3628;
+  --a-ink: #f1ab7c;
+  --a-chip: #f1ab7c;
+  --a-chip-ink: #2a1a0e;
+  --b-bg: #17212c;
+  --b-line: #2a3c4f;
+  --b-ink: #8ec3ee;
+  --b-chip: #8ec3ee;
+  --b-chip-ink: #0f1c28;
+  --warn-bg: #22406b;
+  --warn-text: #e9f1f9;
+  --warn-strong: #ffffff;
+  --warn-icon: #f5b544;
+  --warn-link: #b3dbff;
+  --note-bg: #1b2026;
+  --note-line: #3b4652;
+  --note-icon: #8ec3ee;
+  --num-bg: #dfe6ec;
+  --num-ink: #13171b;
+  --mark-bg: #4a1f3a;
+  --mark-line: #8a4271;
+  --mark-ink: #f6c1e1;
+  --edit-ring: #f0a03a;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Golos Text", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: "Golos Text", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; text-wrap: balance; }
+strong, b { font-weight: 600; }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--edit-ring); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- панель ---------- */
+.bar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px clamp(16px, 4vw, 40px);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar .mark {
+  font: 700 13px/1 "Golos Text", sans-serif;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink);
+}
+.bar .logo { display: block; height: 32px; width: auto; }
+.bar .spacer { flex: 1 1 auto; }
+/* the page's one call to action: the client's personal account, in a new tab */
+.btn.cab { text-decoration: none; }
+.cab-short { display: none; }
+.btn {
+  font: 500 14px/1 "Golos Text", sans-serif;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 15px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  transition: background .15s, border-color .15s;
+}
+.btn:hover { background: var(--surface-2); }
+.btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.05); background: var(--accent); }
+.btn[disabled] { opacity: .45; cursor: default; }
+.btn.todo-nav { border-color: var(--mark-line); background: var(--mark-bg); color: var(--mark-ink); }
+.btn.todo-nav:hover { filter: brightness(.97); background: var(--mark-bg); }
+.status { font-size: 13.5px; color: var(--muted); }
+.status.dirty { color: var(--accent-ink); font-weight: 600; }
+@media (max-width: 640px) {
+  .bar { gap: 8px; padding-top: 8px; padding-bottom: 8px; }
+  .bar .mark, .bar .status:not(.dirty) { display: none; }
+  .bar .logo { height: 28px; }
+  .btn { padding: 8px 11px; font-size: 13.5px; }
+  .cab-long { display: none; }
+  .cab-short { display: inline; }
+}
+
+/* ---------- каркас ---------- */
+.wrap {
+  display: grid; grid-template-columns: 1fr; gap: 0;
+  max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px) 96px;
+}
+.toc { display: none; }
+@media (min-width: 1060px) {
+  .wrap { grid-template-columns: 264px minmax(0, 1fr); gap: 56px; }
+  .toc {
+    display: block; position: sticky; top: 58px; align-self: start;
+    max-height: calc(100vh - 58px); overflow-y: auto; overscroll-behavior: contain;
+    padding: 38px 10px 32px 0; scrollbar-width: thin;
+  }
+  .btn.toc-btn, .mtoc { display: none !important; }
+}
+.doc { min-width: 0; max-width: 72ch; padding-top: 32px; }
+/* contents hidden for now (Masha, 2026-09-14): the code stays, delete this block to bring it back */
+.toc, .btn.toc-btn, .mtoc { display: none !important; }
+.wrap { display: block; }
+.doc { margin: 0 auto; }
+
+/* ---------- оглавление ---------- */
+.toc-top { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.toc-t {
+  font: 600 12px/1 "Golos Text", sans-serif; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.toc-l, .toc-l ul { list-style: none; margin: 0; padding: 0; }
+.toc-l > li { border-top: 1px solid var(--line-soft); padding: 5px 0; }
+.toc-l > li > a {
+  display: block; padding: 5px 0; text-decoration: none;
+  font: 500 14.5px/1.35 "Golos Text", sans-serif; color: var(--ink);
+}
+.toc-l ul { margin: 0 0 4px 1px; border-left: 1px solid var(--line); }
+.toc-l ul a {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-left: -1px; padding: 4px 0 4px 12px; border-left: 2px solid transparent;
+  font-size: 14px; line-height: 1.35; color: var(--ink-2); text-decoration: none;
+}
+.toc-l ul a .lbl { flex: 1 1 auto; min-width: 0; }
+.toc-l a:hover { color: var(--accent-ink); }
+.toc-l > li > a.in { color: var(--accent-ink); }
+.toc-l ul a.on { border-left-color: var(--accent); color: var(--ink); font-weight: 600; }
+.chs { flex: 0 0 auto; display: inline-flex; gap: 3px; }
+.ch {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 19px; height: 19px; padding: 0 4px; border-radius: 5px;
+  font: 600 12px/1 "Golos Text", sans-serif; font-style: normal;
+  background: var(--a-bg); color: var(--a-ink); border: 1px solid var(--a-line);
+}
+.ch.b { background: var(--b-bg); color: var(--b-ink); border-color: var(--b-line); }
+
+.mtoc {
+  position: fixed; left: 0; right: 0; z-index: 49;
+  max-height: 72vh; overflow-y: auto; overscroll-behavior: contain;
+  padding: 16px clamp(16px, 4vw, 40px) 22px;
+  background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow);
+}
+
+/* ---------- шапка ---------- */
+/* compact on purpose: the title, intro and every folded section fit on the first screen */
+.hero { margin-bottom: 14px; }
+.hero h1 {
+  font-size: clamp(26px, 4vw, 36px); font-weight: 700; line-height: 1.15;
+  letter-spacing: -.02em; margin: 0;
+}
+.doc .intro p { color: var(--ink-2); margin-bottom: 10px; }
+.intro + .sec { margin-top: 26px; }
+
+/* ---------- кнопка «Наверх» ---------- */
+.totop {
+  position: fixed; right: clamp(14px, 3vw, 28px); bottom: clamp(14px, 3vw, 28px); z-index: 40;
+  display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px 10px 12px;
+  border: 0; border-radius: 999px; background: var(--num-bg); color: var(--num-ink);
+  font: 500 14px/1 "Golos Text", sans-serif; cursor: pointer; box-shadow: var(--shadow);
+}
+.totop:hover { filter: brightness(1.12); }
+
+/* ---------- разделы и шаги: сворачиваются по клику на заголовок ---------- */
+.sec { margin-top: 52px; border-top: 2px solid var(--ink); scroll-margin-top: 64px; }
+.sec:first-child, .sec.shut + .sec { margin-top: 0; }
+.st { margin-top: 26px; border-top: 1px solid var(--line); scroll-margin-top: 64px; }
+.st.shut + .st { margin-top: 0; }
+.hd { display: flex; align-items: flex-start; gap: 14px; cursor: pointer; }
+body.editing .hd { cursor: default; }
+.hd > h1, .hd > h2 { flex: 1 1 auto; min-width: 0; margin: 0; }
+.sec > .hd { padding: 18px 0 12px; }
+.sec.shut > .hd { padding: 12px 0; }
+.sec > .hd > h1 { font-size: 22px; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
+.sec > .hd > .tg { width: 30px; height: 30px; }
+/* must come after the base heading and intro sizes it overrides */
+@media (max-width: 640px) {
+  /* keep section titles on one line so the folded list still fits a phone screen */
+  .sec > .hd > h1 { font-size: 18.5px; }
+  .doc .intro p { font-size: 15.5px; }
+}
+.st > .hd { padding: 16px 0 8px; }
+.st.shut > .hd { padding-bottom: 16px; }
+.st > .hd > h2 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+.tg {
+  flex: 0 0 auto; width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink-2); cursor: pointer; transition: border-color .15s, color .15s;
+}
+.st > .hd > .tg { width: 30px; height: 30px; margin-top: -1px; }
+.hd:hover > .tg { border-color: var(--ink-2); color: var(--ink); }
+.tg svg { transition: transform .18s ease; }
+.shut > .hd > .tg svg { transform: rotate(-90deg); }
+.hd > h1, .hd > h2 { transition: color .2s; }
+/* once an item is open, its folded siblings fade to light grey and lose weight, so only the open one stands out */
+#app:has(> .sec:not(.shut)) > .sec.shut { border-top-color: var(--line); }
+#app:has(> .sec:not(.shut)) > .sec.shut > .hd > h1,
+.bd:has(> .st:not(.shut)) > .st.shut > .hd > h2 { color: var(--faded); font-weight: 500; }
+#app:has(> .sec:not(.shut)) > .sec.shut > .hd > .tg,
+.bd:has(> .st:not(.shut)) > .st.shut > .hd > .tg { border-color: var(--line-soft); color: var(--faded); }
+#app:has(> .sec:not(.shut)) > .sec.shut > .hd:hover > h1,
+.bd:has(> .st:not(.shut)) > .st.shut > .hd:hover > h2 { color: var(--ink); }
+.bd:has(> .zone:not(.shut)) > .zone.shut { opacity: .5; transition: opacity .2s; }
+.bd:has(> .zone:not(.shut)) > .zone.shut:hover { opacity: 1; }
+
+/* ---------- текст ---------- */
+.doc h3 { font-size: 17.5px; font-weight: 600; margin: 26px 0 6px; }
+.doc p { margin: 0 0 14px; }
+.bl, .nm, .ck { display: flex; gap: 12px; margin: 0 0 9px; }
+.bl .dot { flex: 0 0 auto; width: 14px; color: var(--muted); text-align: center; }
+.nm .n {
+  flex: 0 0 auto; min-width: 26px; height: 26px; margin-top: 1px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: var(--num-bg); color: var(--num-ink);
+  font: 600 13px/1 "Golos Text", sans-serif; font-variant-numeric: tabular-nums;
+}
+.ck .box {
+  flex: 0 0 auto; width: 20px; height: 20px; margin-top: 4px;
+  border: 2px solid var(--ink-2); border-radius: 5px; background: var(--surface);
+}
+.tx { min-width: 0; flex: 1 1 auto; }
+
+mark.todo {
+  background: var(--mark-bg); color: var(--mark-ink);
+  padding: 1px 6px; border-radius: 4px; font-size: .9em;
+}
+
+/* ---------- выноски ---------- */
+.callout {
+  display: flex; gap: 12px; margin: 18px 0; padding: 14px 18px 14px 14px;
+  border-radius: 10px; font-size: 16px;
+}
+.callout .ic {
+  flex: 0 0 auto; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 700 14px/1 "Golos Text", sans-serif;
+}
+.callout .ct { flex: 1 1 auto; min-width: 0; }
+.callout.warn { background: var(--warn-bg); color: var(--warn-text); }
+.callout.warn .ic { background: var(--warn-icon); color: var(--warn-bg); }
+.callout.warn strong { color: var(--warn-strong); }
+.callout.warn a { color: var(--warn-link); }
+.callout.info, .callout.promo { background: var(--note-bg); border: 1px solid var(--note-line); color: var(--ink); }
+.callout.info .ic, .callout.promo .ic { border: 2px solid var(--note-icon); color: var(--note-icon); }
+
+/* ---------- пути А и Б ---------- */
+.zone {
+  margin: 28px 0; padding: 18px clamp(14px, 3vw, 24px) 6px;
+  border-radius: 14px; border: 1px solid var(--a-line); background: var(--a-bg);
+}
+.zone.b { border-color: var(--b-line); background: var(--b-bg); }
+.lane { align-items: flex-start; gap: 12px; }
+.lane-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.zone:not(.shut) > .lane { margin-bottom: 12px; }
+.zone.shut { padding-bottom: 18px; }
+.zone > .hd > .tg { width: 30px; height: 30px; background: var(--surface); }
+.zone.a > .hd > .tg { border-color: var(--a-line); color: var(--a-ink); }
+.zone.b > .hd > .tg { border-color: var(--b-line); color: var(--b-ink); }
+.chip {
+  font: 600 12px/1 "Golos Text", sans-serif; letter-spacing: .08em; text-transform: uppercase;
+  padding: 6px 9px; border-radius: 6px; background: var(--a-chip); color: var(--a-chip-ink);
+}
+.zone.b .chip { background: var(--b-chip); color: var(--b-chip-ink); }
+.lane-t { font: 600 19px/1.3 "Golos Text", sans-serif; color: var(--a-ink); }
+.zone.b .lane-t { color: var(--b-ink); }
+.zone .st { border-top-color: var(--a-line); }
+.zone.b .st { border-top-color: var(--b-line); }
+
+/* ---------- таблицы ---------- */
+.tw { overflow-x: auto; margin: 18px 0 22px; }
+table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 15.5px; }
+th, td { border: 1px solid var(--line); padding: 10px 13px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); font: 600 14px/1.4 "Golos Text", sans-serif; }
+td { background: var(--surface); }
+table.cmp th { font-size: 15.5px; padding: 12px 14px; }
+table.cmp th.hl { background: var(--num-bg); border-color: var(--num-bg); color: var(--num-ink); }
+table.cmp td.hl { background: var(--surface-2); }
+/* side-by-side comparisons get equal columns; an empty first header marks a narrow label column */
+table.eq, table.opts { table-layout: fixed; }
+table.opts th:first-child { width: 24%; }
+
+/* ---------- картинки ---------- */
+figure { margin: 18px 0 24px; }
+figure img {
+  display: block; width: auto; max-width: 100%; height: auto; max-height: 440px;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--surface);
+  box-shadow: var(--shadow); cursor: zoom-in;
+}
+figure.md img { max-width: min(100%, 480px); }
+figure.sm img { max-width: min(100%, 260px); }
+figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.row { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: start; margin: 18px 0 24px; }
+.row figure { margin: 0; }
+.row figure img { max-height: 400px; }
+
+.lb { padding: 0; border: 0; background: transparent; max-width: 96vw; max-height: 96vh; overflow: visible; }
+.lb::backdrop { background: rgba(10, 16, 22, .84); }
+.lb img { display: block; width: auto; height: auto; max-width: 96vw; max-height: 88vh; border-radius: 8px; background: #ffffff; cursor: zoom-out; }
+.lb p { margin: 10px 0 0; text-align: center; font-size: 15px; color: #e9eef3; }
+
+.ph {
+  margin: 22px 0; padding: 26px 20px; border-radius: 10px;
+  border: 2px dashed var(--mark-line); background: var(--surface); text-align: center;
+}
+.ph-k {
+  display: block; margin-bottom: 8px;
+  font: 600 12px/1 "Golos Text", sans-serif; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--mark-ink);
+}
+.ph-t { font-size: 15.5px; color: var(--ink-2); }
+
+.flash { animation: flash 1.4s ease-out; }
+@keyframes flash { 0% { box-shadow: 0 0 0 6px var(--mark-line); } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+/* ---------- правка ---------- */
+[data-ed] { border-radius: 5px; }
+body.editing [data-ed] {
+  outline: 1px dashed color-mix(in srgb, var(--edit-ring) 42%, transparent);
+  outline-offset: 3px; cursor: text;
+}
+body.editing [data-ed]:hover { outline-style: solid; }
+body.editing [data-ed]:focus {
+  outline: 2px solid var(--edit-ring); outline-offset: 3px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+
+<script id="doc-data" type="application/json">[{"t": "p", "text": "С 1 сентября 2026 года транспортные накладные стали электронными. Бумагу подписывать больше не нужно: приём и выдачу груза вы подтверждаете в телефоне, а инспектору ГИБДД показываете QR-код."}, {"t": "callout", "kind": "info", "text": "**Платить вам ничего не нужно.** Подпись в Госключе бесплатная, лицензию на документы покупает компания."}, {"t": "h1", "text": "1. Сделайте электронную подпись (Госключ)"}, {"t": "p", "text": "Накладная — юридически значимый документ, подписывать её нужно усиленной квалифицированной электронной подписью (УКЭП). Водителю подходит УКЭП физического лица из приложения «Госключ»: она бесплатная, и подписывать ей можно прямо с телефона — без токена и без компьютера."}, {"t": "callout", "kind": "warn", "text": "**Нужна именно УКЭП** — усиленная квалифицированная. Неквалифицированная подпись (УНЭП) не подойдёт."}, {"t": "h2", "text": "Шаг 1. Установите «Госключ»"}, {"t": "num", "n": "1", "text": "Скачайте приложение «Госключ» — [goskey.ru](https://goskey.ru)."}, {"t": "num", "n": "2", "text": "Войдите в него через Госуслуги и активируйте учётную запись."}, {"t": "img", "cap": "Скачать приложение «Госключ»", "src": "img/goskey-03.jpg"}, {"t": "h2", "text": "Шаг 2. Получите УКЭП"}, {"t": "p", "text": "Есть три способа — выбирайте тот, который вам доступен:"}, {"t": "bullet", "text": "**Очно в МФЦ или банке-партнёре** — подходит всем, паспорт любого образца. Возьмите паспорт и телефон с установленным «Госключом». Точки выдачи — [на карте Госключа](https://goskey.ru/map/)."}, {"t": "bullet", "text": "**Прямо в приложении, по загранпаспорту** — нужен загранпаспорт нового образца (с чипом) и телефон с NFC."}, {"t": "bullet", "text": "**Прямо в приложении, по биометрии** — если вы сдавали биометрию и она подтверждена."}, {"t": "img", "cap": "Способы получить УКЭП", "src": "img/goskey-04.jpg"}, {"t": "callout", "kind": "info", "text": "**Подпись действует 1 год.** Когда срок закончится, выпустите её заново тем же способом."}, {"t": "h1", "text": "2. Примите приглашение от компании"}, {"t": "p", "text": "Дальше работает ваш работодатель: он добавляет вас в личный кабинет «Платформы ЭПД» и выпускает на вас доверенность — МЧД. Она нужна, чтобы вы могли подписывать накладные от имени компании своей личной подписью. Делать вам для этого ничего не нужно: МЧД оформляется бесплатно в кабинете."}, {"t": "h2", "text": "Шаг 1. Зарегистрируйтесь по ссылке из письма"}, {"t": "p", "text": "Когда вас добавят, на вашу электронную почту придёт письмо с приглашением."}, {"t": "num", "n": "1", "text": "Нажмите «Посмотреть приглашение» в письме."}, {"t": "num", "n": "2", "text": "На открывшемся сайте нажмите **«Зарегистрироваться»**, а не «Войти»."}, {"t": "num", "n": "3", "text": "Зарегистрируйтесь: телефон → код из СМС → ФИО → пароль. **Этот же пароль нужен для входа в мобильное приложение** — запишите его."}, {"t": "img", "cap": "Письмо-приглашение", "size": "md", "src": "img/app-08.jpg"}, {"t": "callout", "kind": "info", "text": "**Приглашение не пришло на почту?** Проверьте папку «Спам» и уточните у логиста или бухгалтера, на какую почту его отправили. Если срок действия ссылки истёк — попросите отправить приглашение заново."}, {"t": "h2", "text": "Шаг 2. Заполните свои данные"}, {"t": "p", "text": "В правом верхнем углу зайдите в раздел «Мои данные» и проверьте, что ваши **ИНН и СНИЛС указаны верно.**"}, {"t": "callout", "kind": "warn", "text": "Без ИНН и СНИЛС войти в приложение не получится."}, {"t": "img", "cap": "«Мои данные» → заполнить ИНН и СНИЛС", "size": "md", "src": "img/app-09.jpg"}, {"t": "h2", "text": "Шаг 3. Включите Госключ"}, {"t": "p", "text": "Подключите ваш госключ к платформе **в двух местах** — на сайте и в приложении. Начните с сайта: личный кабинет → верхний правый угол «Мои данные» → «Подключить Госключ» → пройдите по подсказкам."}, {"t": "imgrow", "items": [{"src": "img/goskey-02.jpg", "cap": "На сайте: кнопка «Подключить Госключ»"}, {"src": "img/goskey-05.jpg", "cap": "Последний шаг: галочка «Включить возможность подписывать»"}]}, {"t": "p", "text": "Второе место — само приложение: Госключ там включается отдельно, это раздел 3 ниже."}, {"t": "h1", "text": "3. Установите приложение «Платформа ЭПД» и войдите"}, {"t": "num", "n": "1", "text": "Установите приложение: [Google Play](https://play.google.com/store/apps/details?id=com.edo), [RuStore](https://www.rustore.ru/catalog/app/com.edo), [App Store](https://apps.apple.com/ru/app/id6448550435)."}, {"t": "num", "n": "2", "text": "Нажмите «Войти» и введите логин и пароль от Платформы ЭПД — те же, что вы задали при регистрации по приглашению."}, {"t": "num", "n": "3", "text": "При первом входе можно придумать четырёхзначный PIN-код, чтобы дальше не вводить пароль."}, {"t": "num", "n": "4", "text": "Если вы работаете в нескольких организациях, выберите, в какую хотите войти."}, {"t": "num", "n": "5", "text": "Включите Госключ: «Профиль» → «Настройки подписей» → включите «Госключ». Без этого Госключ не появится в способах подписания, когда придёт накладная."}, {"t": "imgrow", "items": [{"src": "img/app-01.jpg", "cap": "Вход в приложение"}, {"src": "img/app-02.jpg", "cap": "Выбор организации"}, {"src": "img/app-03.jpg", "cap": "Раздел «Документы»"}]}, {"t": "h1", "text": "4. Как работать в приложении"}, {"t": "h2", "text": "Что вы видите после входа"}, {"t": "p", "text": "Открывается раздел «Документы». В карточках виден статус — «Новая погрузка», «В пути», «Доставлен», «Принят получателем». Есть вкладки «В работе» и «Архив»."}, {"t": "p", "text": "Накладную создаёт грузоотправитель, вам она приходит уже готовой. Ваше дело — проверить данные и подписать её дважды: на погрузке и на разгрузке."}, {"t": "h2", "text": "Что подписываете именно вы"}, {"t": "p", "text": "Электронная накладная состоит из титулов — как поля в бумажной накладной, только каждую подписывает свой участник. Ваших титулов два:"}, {"t": "table", "headers": ["Титул", "Что подтверждаете", "Когда"], "rows": [["Т2", "Приняли груз", "На погрузке"], ["Т4", "Выдали груз получателю", "На разгрузке"]]}, {"t": "p", "text": "Остальные титулы подписывают грузоотправитель, грузополучатель и ваша компания с компьютера: создание накладной, получение груза, смену маршрута, замену машины или водителя, стоимость перевозки."}, {"t": "h2", "text": "Как подписать накладную"}, {"t": "num", "n": "1", "text": "Найдите документ со статусом «Ждёт подписания», откройте карточку и проверьте данные.\nЗамечаний нет — нажмите «Принять без замечаний». Есть расхождения — «Принять с замечаниями» и заполните блок, дальше всё так же."}, {"t": "num", "n": "2", "text": "Нажмите «Подписать», выберите способ «Госключ» УКЭП, проверьте, что выбран нужный документ, и нажмите «Отправить в Госключ»."}, {"t": "imgrow", "items": [{"src": "img/app-13.jpg", "cap": "Накладная к подписанию"}, {"src": "img/app-14.jpg", "cap": "Способ подписания «Госключ»"}, {"src": "img/app-15.jpg", "cap": "Отправить в Госключ"}]}, {"t": "callout", "kind": "warn", "text": "Подписать в Госключе нужно в течение 24 часов. Не успели — накладную придётся отправить на подпись заново."}, {"t": "num", "n": "3", "text": "Нажмите «Перейти в Госключ» — откроется приложение Госключ (или Госуслуги, если вы работаете через них). Придёт и push-уведомление."}, {"t": "num", "n": "4", "text": "Найдите раздел с документами от ООО «Эвотор» и откройте нужный документ."}, {"t": "num", "n": "5", "text": "Включите переключатель «Я ознакомился и готов подписать документы» и нажмите «Подписать»."}, {"t": "num", "n": "6", "text": "Появится «Документы подписаны» — статус в приложении Платформы ЭПД обновится сам."}, {"t": "imgrow", "items": [{"src": "img/app-16.jpg", "cap": "Перейти в Госключ"}, {"src": "img/app-17.jpg", "cap": "Документы от ООО «Эвотор»"}, {"src": "img/app-18.jpg", "cap": "Ознакомиться и подписать"}]}, {"t": "img", "cap": "«Документы подписаны» — готово", "size": "sm", "src": "img/app-19.jpg"}, {"t": "h2", "text": "QR-код для ГИБДД"}, {"t": "p", "text": "Если ГИБДД хотят проверить ваши документы по перевозке, покажите инспектору QR-код из приложения.\nQR-код появится, когда вы подпишете накладную при погрузке. Чтобы показать QR-код, откройте документ и нажмите кнопку QR-кода."}, {"t": "callout", "kind": "info", "text": "QR-код работает без интернета.\nОткройте его сразу после подписания на погрузке — код сохранится в приложении и будет доступен даже без сети."}, {"t": "imgrow", "items": [{"src": "img/app-04.jpg", "cap": "Список накладных со статусами"}, {"src": "img/app-05.jpg", "cap": "QR-код для проверки ГИБДД"}, {"src": "img/app-06.jpg", "cap": "Профиль и поддержка"}]}, {"t": "p", "text": "В разделе «Профиль» — звонок и чат с поддержкой, смена пароля, настройки подписей, очистка кэша, база знаний и выход из приложения."}, {"t": "h2", "text": "Проверьте себя перед первым рейсом"}, {"t": "check", "text": "В «Госключе» выпущена подпись — именно УКЭП, и срок её действия не истёк"}, {"t": "check", "text": "Приглашение от компании принято, регистрация завершена"}, {"t": "check", "text": "В разделе «Мои данные» заполнены ИНН и СНИЛС"}, {"t": "check", "text": "Госключ включён и на сайте, и в приложении"}, {"t": "check", "text": "Вы вошли в приложение «Платформа ЭПД» и видите свою организацию"}, {"t": "check", "text": "Компания выпустила на вас доверенность (МЧД) — уточните у логиста или бухгалтера"}, {"t": "h1", "text": "5. Что может пойти не так"}, {"t": "h2", "text": "В рейсе нет интернета"}, {"t": "bullet", "text": "Связь ограничена по соображениям безопасности — это не помеха: Платформа ЭПД включена в «белые списки» и работает при таких ограничениях."}, {"t": "bullet", "text": "Связи нет совсем — на месте это не обойти. Позвоните тому, у кого есть доступ в кабинет и интернет, — собственнику, логисту или бухгалтеру — и попросите подписать документ с компьютера."}, {"t": "bullet", "text": "Проверка ГИБДД без интернета — не проблема, если QR-код открыт заранее: он сохраняется в приложении и работает без сети."}, {"t": "h2", "text": "Накладная не пришла в приложение"}, {"t": "num", "n": "1", "text": "Выбрана нужная организация? Если вы работаете в нескольких компаниях, проверьте, от чьего имени открыто приложение — организация переключается в профиле."}, {"t": "num", "n": "2", "text": "Грузоотправитель уже создал накладную? Документ появляется у вас только после того, как отправитель её создал и подписал. Уточните у логиста."}, {"t": "num", "n": "3", "text": "Остальное — на стороне компании: лицензия должна быть оплачена, а роуминг с грузоотправителем и грузополучателем настроен. Это проверяет тот, у кого есть доступ в личный кабинет с компьютера."}, {"t": "num", "n": "4", "text": "Всё проверили, а документа нет? Напишите в нашу техподдержку [epd@platformaofd.ru](mailto:epd@platformaofd.ru)."}, {"t": "h2", "text": "Не получается войти"}, {"t": "bullet", "text": "«Неверный логин или пароль» — нажмите «Забыл пароль» и создайте новый. Логин и пароль те же, что вы задали при регистрации по приглашению."}, {"t": "bullet", "text": "Приложение не пускает дальше — скорее всего, не заполнены ИНН и СНИЛС. Зайдите в личный кабинет на сайте, раздел «Мои данные», и заполните их."}, {"t": "bullet", "text": "Ошибка 409 при регистрации — вы перешли по ссылке из приглашения, но вошли не в тот аккаунт. По ссылке нужно нажимать «Зарегистрироваться», а не «Войти». Попросите отправить приглашение заново."}, {"t": "bullet", "text": "«Недостаточно полномочий» — вам не выдали доступ к сервису ЭПД. Попросите того, кто вас приглашал, открыть «Сотрудники» в кабинете (правый верхний угол) и проверить вашу роль."}, {"t": "h2", "text": "Не получается подписать через Госключ"}, {"t": "bullet", "text": "Госключа нет в списке способов подписания — он не включён. Включите его в двух местах: на сайте «Мои данные» → «Подключить Госключ» и в приложении «Профиль» → «Настройки подписей»."}, {"t": "bullet", "text": "Прошло больше 24 часов — вернитесь в приложение «Платформа ЭПД» и отправьте документ на подпись заново."}, {"t": "bullet", "text": "В Госключе нет документа — проверьте раздел с документами от ООО «Эвотор». Если его там нет, вернитесь в «Платформу ЭПД» и отправьте документ в Госключ ещё раз."}, {"t": "bullet", "text": "В Госключе нет подписи — проверьте, что вы выпустили именно УКЭП и срок её действия не истёк: сертификат живёт 1 год, потом его нужно выпустить заново."}, {"t": "h1", "text": "Контакты"}, {"t": "callout", "kind": "info", "text": "Сначала спросите своего логиста или бухгалтера. Лицензия, роуминг и доверенность настраиваются на стороне компании — водитель на это повлиять не может."}, {"t": "table", "headers": ["Общие вопросы", "Техническая поддержка"], "rows": [["Подключение, тарифы, консультация\n[+7 (495) 252-50-50](tel:+74952525050)", "Технические сложности\n[epd@platformaofd.ru](mailto:epd@platformaofd.ru)\nОпишите проблему и укажите ИНН организации и контактные телефоны вас и вашего логиста"]], "eq": true}]</script>
+
+<div class="bar" id="bar">
+  <img class="logo" src="data:image/png;base64,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" alt="Платформа ЭПД">
+  <button class="btn toc-btn" id="toc-btn" type="button" aria-expanded="false" aria-controls="mtoc">Содержание</button>
+  <span class="spacer"></span>
+  <a class="btn primary cab" href="https://epd.platformaofd.ru" target="_blank" rel="noopener"><span class="cab-long">Перейти в личный кабинет</span><span class="cab-short">Личный кабинет</span><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <span class="status" id="status"></span>
+  <button class="btn todo-nav" id="next-todo" hidden>Не заполнено: <b id="todo-n">0</b> →</button>
+  <button class="btn" id="edit" aria-pressed="false">Режим правки</button>
+  <button class="btn primary" id="save" disabled>Сохранить</button>
+</div>
+<nav class="mtoc" id="mtoc" aria-label="Содержание" hidden><div class="toc-body"></div></nav>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Содержание"><div class="toc-body"></div></nav>
+  <main class="doc">
+    <header class="hero">
+      <h1>Электронные накладные — что делать водителю</h1>
+    </header>
+    <div id="app"></div>
+  </main>
+</div>
+
+<dialog class="lb" id="lb" aria-label="Скриншот крупно"><img id="lb-img" alt=""><p id="lb-cap"></p></dialog>
+<button class="totop" id="totop" type="button" hidden><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Наверх</button>
+
+<script>
+(function () {
+  "use strict";
+  var SHELL = "<!doctype html>\n" + document.documentElement.outerHTML;
+  var DOC = JSON.parse(document.getElementById("doc-data").textContent);
+  var app = document.getElementById("app");
+  var statusEl = document.getElementById("status");
+  var editBtn = document.getElementById("edit");
+  var saveBtn = document.getElementById("save");
+  var todoBtn = document.getElementById("next-todo");
+  var todoN = document.getElementById("todo-n");
+  var tocBtn = document.getElementById("toc-btn");
+  var mtoc = document.getElementById("mtoc");
+  var deskToc = document.querySelector(".toc");
+  var dirty = false, editing = false, artifact = null;
+  var SMOOTH = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  var toTop = document.getElementById("totop");
+  var CHEV = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" ' +
+    'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function rich(s) {
+    var h = esc(s);
+    h = h.replace(/\{\{([\s\S]+?)\}\}/g, '<mark class="todo">$1</mark>');
+    h = h.replace(/\*\*([\s\S]+?)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/\[([^\]]+)\]\(((?:https?:\/\/|tel:|mailto:)[^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return h.replace(/\n/g, "<br>");
+  }
+  function plain(s) {
+    return String(s).replace(/\*\*|\{\{|\}\}/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1");
+  }
+  function ed(i, f) { return ' data-ed="1" data-i="' + i + '" data-f="' + f + '"'; }
+
+  function figure(src, cap, size, i, f) {
+    return "<figure" + (size ? ' class="' + esc(size) + '"' : "") + '><img src="' + esc(src) +
+      '" alt="' + esc(cap) + '" loading="lazy">' +
+      (cap ? "<figcaption" + ed(i, f) + ">" + esc(cap) + "</figcaption>" : "") + "</figure>";
+  }
+
+  // Collapsible block: h1 opens a section, h2 a step; the body is hidden "until-found" so browser search still finds text.
+  function openBox(cls, tag, i, text) {
+    return '<section class="' + cls + '" id="s' + i + '"><div class="hd"><' + tag + ed(i, "text") + ">" + rich(text) +
+      "</" + tag + '><button class="tg" type="button" aria-expanded="true" aria-controls="b' + i +
+      '" aria-label="Свернуть или развернуть">' + CHEV + '</button></div><div class="bd" id="b' + i + '">';
+  }
+
+  function render() {
+    var out = ['<div class="intro">'], toc = [], stack = [], intro = true;
+    // stack holds open containers: "sec" (h1), "st" (h2), "zone" (path A/B). A zone opened right under
+    // a section (outer 1) survives h2 headings; one opened inside a step (outer 2) ends at the next h2.
+    function top() { return stack[stack.length - 1]; }
+    function close() { stack.pop(); out.push("</div></section>"); }
+    function zoneIn() { for (var k = stack.length - 1; k >= 0; k--) if (stack[k].type === "zone") return stack[k]; return null; }
+
+    DOC.forEach(function (b, i) {
+      switch (b.t) {
+        case "h1":
+          if (intro) { out.push("</div>"); intro = false; }
+          while (stack.length) close();
+          stack.push({ type: "sec" });
+          toc.push({ id: "s" + i, text: b.text, kids: [] });
+          out.push(openBox("sec", "h1", i, b.text));
+          break;
+        case "h2":
+          while (top() && (top().type === "st" || (top().type === "zone" && top().outer >= 2))) close();
+          var z = zoneIn(), item = { id: "s" + i, text: b.text, lanes: z ? [z.kind] : [] };
+          stack.push({ type: "st", item: item });
+          if (toc.length) toc[toc.length - 1].kids.push(item);
+          out.push(openBox("st", "h2", i, b.text));
+          break;
+        case "h3": out.push("<h3" + ed(i, "text") + ">" + rich(b.text) + "</h3>"); break;
+        case "p": out.push("<p" + ed(i, "text") + ">" + rich(b.text) + "</p>"); break;
+        case "bullet":
+          out.push('<div class="bl"><span class="dot" aria-hidden="true">•</span><div class="tx"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "num":
+          out.push('<div class="nm"><span class="n">' + esc(b.n) + '</span><div class="tx"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "check":
+          out.push('<div class="ck"><span class="box" aria-hidden="true"></span><div class="tx"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "callout":
+          var kind = b.kind === "warn" ? "warn" : b.kind === "promo" ? "promo" : "info";
+          out.push('<div class="callout ' + kind + '"><span class="ic" aria-hidden="true">' + (kind === "warn" ? "!" : "i") +
+            '</span><div class="ct"' + ed(i, "text") + ">" + rich(b.text) + "</div></div>");
+          break;
+        case "branch":
+          if (zoneIn()) { while (top().type !== "zone") close(); close(); }
+          var lane = b.kind === "ip" ? "a" : "b", step = top() && top().type === "st" ? top() : null;
+          stack.push({ type: "zone", kind: lane, outer: step ? 2 : 1 });
+          if (step && step.item.lanes.indexOf(lane) < 0) step.item.lanes.push(lane);
+          // a path is collapsible like a section: its heading row toggles the body
+          out.push('<section class="zone ' + lane + '" id="s' + i + '"><div class="hd lane"><div class="lane-main"><span class="chip">' +
+            (lane === "a" ? "Для ИП за рулём" : "Для наёмных водителей") + '</span><span class="lane-t"' +
+            ed(i, "text") + ">" + rich(b.text) + '</span></div><button class="tg" type="button" aria-expanded="true" aria-controls="b' + i +
+            '" aria-label="Свернуть или развернуть">' + CHEV + '</button></div><div class="bd" id="b' + i + '">');
+          break;
+        case "ph":
+          out.push('<div class="ph"><span class="ph-k">Место под скриншот</span><span class="ph-t"' +
+            ed(i, "text") + ">" + rich(b.text) + "</span></div>");
+          break;
+        case "table":
+          var tcls = ((b.hl != null ? "cmp eq" : b.eq ? "eq" : "") + (b.headers[0] ? "" : " opts")).trim();
+          var t = '<div class="tw"><table' + (tcls ? ' class="' + tcls + '"' : "") + '><thead><tr>';
+          b.headers.forEach(function (hd, c) {
+            t += "<th" + (b.hl === c ? ' class="hl"' : "") + ed(i, "hdr:" + c) + ">" + rich(hd) + "</th>";
+          });
+          t += "</tr></thead><tbody>";
+          b.rows.forEach(function (r, ri) {
+            t += "<tr>";
+            r.forEach(function (cell, ci) {
+              t += "<td" + (b.hl === ci ? ' class="hl"' : "") + ed(i, "cell:" + ri + ":" + ci) + ">" + rich(cell) + "</td>";
+            });
+            t += "</tr>";
+          });
+          out.push(t + "</tbody></table></div>");
+          break;
+        case "img":
+          out.push(figure(b.src, b.cap, b.size, i, "cap"));
+          break;
+        case "imgrow":
+          out.push('<div class="row">' + b.items.map(function (it, k) {
+            return figure(it.src, it.cap, null, i, "cap:" + k);
+          }).join("") + "</div>");
+          break;
+      }
+    });
+    if (intro) out.push("</div>");
+    while (stack.length) close();
+    app.innerHTML = out.join("\n");
+    renderToc(toc);
+    app.querySelectorAll(BOX).forEach(function (box) { setOpen(box, false); });  // everything starts folded
+    wire();
+    countTodos();
+  }
+
+  function renderToc(toc) {
+    var chip = function (l) { return '<i class="ch ' + l + '" title="' + (l === "a" ? "Путь А" : "Путь Б") + '">' + (l === "a" ? "А" : "Б") + "</i>"; };
+    var html = '<div class="toc-top"><span class="toc-t">Содержание</span></div>' +
+      '<ul class="toc-l">' + toc.map(function (s) {
+        return '<li><a href="#' + s.id + '" data-id="' + s.id + '">' + esc(plain(s.text)) + "</a>" +
+          (s.kids.length ? "<ul>" + s.kids.map(function (k) {
+            return '<li><a href="#' + k.id + '" data-id="' + k.id + '"><span class="lbl">' + esc(plain(k.text)) + "</span>" +
+              (k.lanes.length ? '<span class="chs">' + k.lanes.map(chip).join("") + "</span>" : "") + "</a></li>";
+          }).join("") + "</ul>" : "") + "</li>";
+      }).join("") + "</ul>";
+    document.querySelectorAll(".toc-body").forEach(function (el) { el.innerHTML = html; });
+  }
+
+  /* ---------- сворачивание: на каждом уровне открыт только один пункт ---------- */
+  var BOX = ".sec, .st, .zone";
+  function setOpen(box, open) {
+    var bd = box.querySelector(":scope > .bd");
+    if (open) bd.removeAttribute("hidden"); else bd.setAttribute("hidden", "until-found");
+    box.classList.toggle("shut", !open);
+    box.querySelector(":scope > .hd > .tg").setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  // fold a block together with everything inside it, so reopening starts from a clean list
+  function fold(box) {
+    setOpen(box, false);
+    box.querySelectorAll(BOX).forEach(function (inner) { if (!inner.classList.contains("shut")) setOpen(inner, false); });
+  }
+  // open a block and fold its siblings: other sections, other steps of the same section, the other path.
+  // An opened section or path also opens its first step, unless one of its steps is already open.
+  function openOnly(box) {
+    var parent = box.parentElement.closest(BOX);
+    var kind = box.classList.contains("sec") ? "sec" : box.classList.contains("st") ? "st" : "zone";
+    app.querySelectorAll("." + kind).forEach(function (other) {
+      if (other !== box && !other.classList.contains("shut") && other.parentElement.closest(BOX) === parent) fold(other);
+    });
+    setOpen(box, true);
+    if (box.classList.contains("st")) return;
+    var steps = Array.prototype.filter.call(box.querySelectorAll(".st"), function (st) { return st.parentElement.closest(BOX) === box; });
+    if (steps.length && steps.every(function (st) { return st.classList.contains("shut"); })) setOpen(steps[0], true);
+  }
+  // a click on a heading keeps that heading at the same place on screen while siblings above it fold
+  function toggle(box) {
+    var before = box.getBoundingClientRect().top;
+    if (box.classList.contains("shut")) openOnly(box); else fold(box);
+    var shift = box.getBoundingClientRect().top - before;
+    if (shift) window.scrollBy(0, shift);
+  }
+  // open every collapsed block that contains el (and el itself when it is a block), outermost first
+  function reveal(el) {
+    var chain = [];
+    for (var p = el; p && p !== app; p = p.parentElement) if (p.matches(BOX)) chain.unshift(p);
+    chain.forEach(function (box) { if (box.classList.contains("shut")) openOnly(box); });
+  }
+  // the visible stand-in for an element hidden inside collapsed blocks: the outermost collapsed block's heading row
+  function anchorOf(el) {
+    var hid = null;
+    for (var p = el.parentElement; p && p !== app; p = p.parentElement) if (p.hasAttribute("hidden")) hid = p;
+    return hid ? hid.previousElementSibling : el;
+  }
+
+  app.addEventListener("click", function (e) {
+    var img = e.target.closest("figure img");
+    if (img) { zoom(img); return; }
+    var hd = e.target.closest(".hd");
+    if (!hd) return;
+    if (editing && !e.target.closest(".tg")) return;  // while editing only the arrow toggles, so text stays clickable
+    toggle(hd.parentElement);
+    spy();
+  });
+  app.addEventListener("beforematch", function (e) {
+    var box = e.target.parentElement;
+    if (box && box.classList.contains("shut")) openOnly(box);
+  }, true);
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest(".toc-l a");
+    if (!a) return;
+    e.preventDefault();
+    var target = document.getElementById(a.dataset.id);
+    if (!target) return;
+    reveal(target);
+    closeMobileToc();
+    target.scrollIntoView({ behavior: SMOOTH, block: "start" });
+    try { history.replaceState(null, "", "#" + a.dataset.id); } catch (err) { /* sandboxed */ }
+  });
+
+  /* ---------- оглавление на телефоне ---------- */
+  function closeMobileToc() { mtoc.hidden = true; tocBtn.setAttribute("aria-expanded", "false"); }
+  tocBtn.addEventListener("click", function () {
+    if (!mtoc.hidden) { closeMobileToc(); return; }
+    mtoc.style.top = document.getElementById("bar").getBoundingClientRect().bottom + "px";
+    mtoc.hidden = false;
+    tocBtn.setAttribute("aria-expanded", "true");
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !mtoc.hidden) closeMobileToc(); });
+
+  /* ---------- крупный скриншот ---------- */
+  var lb = document.getElementById("lb");
+  function zoom(img) {
+    if (!lb.showModal) return;
+    document.getElementById("lb-img").src = img.currentSrc || img.src;
+    document.getElementById("lb-img").alt = img.alt;
+    document.getElementById("lb-cap").textContent = img.alt;
+    lb.showModal();
+  }
+  lb.addEventListener("click", function () { lb.close(); });
+
+  /* ---------- правка ---------- */
+  function ser(node) {
+    var out = "";
+    node.childNodes.forEach(function (n) {
+      if (n.nodeType === 3) { out += n.nodeValue.replace(/[ \t\r\n]+/g, " "); return; }
+      if (n.nodeType !== 1) return;
+      var tag = n.nodeName, inner;
+      if (tag === "BR") out += "\n";
+      else if (tag === "STRONG" || tag === "B") { inner = ser(n); if (inner.trim()) out += "**" + inner + "**"; }
+      else if (tag === "MARK") { inner = ser(n); if (inner.trim()) out += "{{" + inner + "}}"; }
+      else if (tag === "A") {
+        var href = n.getAttribute("href") || "";
+        out += /^(https?:\/\/|tel:|mailto:)/.test(href) ? "[" + ser(n) + "](" + href + ")" : ser(n);
+      }
+      else if (tag === "DIV" || tag === "P") { if (out && out.slice(-1) !== "\n") out += "\n"; out += ser(n); }
+      else out += ser(n);
+    });
+    return out;
+  }
+  function serialize(el) {
+    return ser(el).split("\n").map(function (l) { return l.replace(/ {2,}/g, " ").trim(); })
+      .join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
+
+  function store(i, f, val) {
+    var b = DOC[i], m;
+    if (f === "text") b.text = val;
+    else if (f === "cap") b.cap = val;
+    else if ((m = f.match(/^cap:(\d+)$/))) b.items[+m[1]].cap = val;
+    else if ((m = f.match(/^hdr:(\d+)$/))) b.headers[+m[1]] = val;
+    else if ((m = f.match(/^cell:(\d+):(\d+)$/))) b.rows[+m[1]][+m[2]] = val;
+  }
+
+  function wire() {
+    app.querySelectorAll("[data-ed]").forEach(function (el) {
+      el.contentEditable = editing ? "true" : "false";
+      if (el.dataset.bound) return;
+      el.dataset.bound = "1";
+      el.addEventListener("input", function () {
+        store(+el.dataset.i, el.dataset.f, serialize(el));
+        setDirty(true);
+        countTodos();
+      });
+      el.addEventListener("paste", function (e) {
+        e.preventDefault();
+        var txt = (e.clipboardData || window.clipboardData).getData("text/plain");
+        document.execCommand("insertText", false, txt);
+      });
+    });
+  }
+
+  function todoEls() { return Array.prototype.slice.call(app.querySelectorAll(".ph, mark.todo")); }
+  function countTodos() {
+    var n = todoEls().length;
+    todoN.textContent = n;
+    todoBtn.hidden = n === 0;
+  }
+  todoBtn.addEventListener("click", function () {
+    var els = todoEls();
+    if (!els.length) return;
+    var next = els.filter(function (el) {
+      return anchorOf(el).getBoundingClientRect().top > window.innerHeight / 2 + 4;
+    })[0] || els[0];
+    reveal(next);
+    next.scrollIntoView({ block: "center", behavior: SMOOTH });
+    next.classList.remove("flash");
+    void next.offsetWidth;
+    next.classList.add("flash");
+  });
+
+  function setDirty(v) {
+    dirty = v;
+    saveBtn.disabled = !v || !artifact;
+    statusEl.textContent = v ? "Есть несохранённые правки" : "";
+    statusEl.className = v ? "status dirty" : "status";
+  }
+
+  editBtn.addEventListener("click", function () {
+    editing = !editing;
+    document.body.classList.toggle("editing", editing);
+    editBtn.setAttribute("aria-pressed", editing ? "true" : "false");
+    editBtn.textContent = editing ? "Правка включена" : "Режим правки";
+    wire();
+  });
+
+  function nextHTML() {
+    var json = JSON.stringify(DOC).replace(/</g, "\\u003c");
+    return SHELL.replace(
+      /(<script id="doc-data" type="application\/json">)[\s\S]*?(<\/script>)/,
+      function (m, a, b) { return a + json + b; }
+    );
+  }
+
+  saveBtn.addEventListener("click", function () {
+    if (!artifact) return;
+    saveBtn.disabled = true;
+    statusEl.className = "status";
+    statusEl.textContent = "Сохраняю…";
+    artifact.publish(nextHTML()).then(function () {
+      setDirty(false);
+      statusEl.textContent = "Правки сохранены";
+    }).catch(function (err) {
+      var code = err && err.code;
+      if (code === "conflict") {
+        statusEl.textContent = "Страницу изменили в другом окне — она сейчас перезагрузится";
+      } else if (code === "not_granted" || code === "not_writer") {
+        statusEl.textContent = "Здесь только просмотр — сохранять может владелец страницы";
+      } else {
+        statusEl.textContent = "Не удалось сохранить, попробуйте ещё раз";
+        statusEl.className = "status dirty";
+        saveBtn.disabled = false;
+      }
+    });
+  });
+
+  window.addEventListener("beforeunload", function (e) {
+    if (dirty) { e.preventDefault(); e.returnValue = ""; }
+  });
+
+  /* ---------- где я сейчас: подсветка в оглавлении ---------- */
+  var ticking = false;
+  function spy() {
+    ticking = false;
+    toTop.hidden = window.scrollY < 600;
+    var cur = null, curSec = null, LINE = 120;
+    app.querySelectorAll(".sec").forEach(function (sec) { if (sec.getBoundingClientRect().top < LINE) curSec = sec; });
+    if (curSec) {
+      cur = curSec;
+      curSec.querySelectorAll(".st").forEach(function (st) {
+        if (!st.offsetParent || st.parentElement.closest("[hidden]")) return;
+        if (st.getBoundingClientRect().top < LINE) cur = st;
+      });
+    }
+    document.querySelectorAll(".toc-l a").forEach(function (a) {
+      a.classList.toggle("on", !!cur && a.dataset.id === cur.id);
+      a.classList.toggle("in", !!curSec && a.dataset.id === curSec.id);
+    });
+    if (deskToc.offsetParent) {
+      var on = deskToc.querySelector("a.on");
+      if (on) {
+        var nr = deskToc.getBoundingClientRect(), r = on.getBoundingClientRect();
+        if (r.top < nr.top + 48 || r.bottom > nr.bottom - 24) deskToc.scrollTop += r.top - nr.top - nr.height / 3;
+      }
+    }
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(spy); }
+  }, { passive: true });
+
+  toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: SMOOTH }); });
+
+  render();
+  setDirty(false);
+  var fromLink = location.hash && document.getElementById(location.hash.slice(1));  // a shared #s12 link opens that item
+  if (fromLink && app.contains(fromLink)) { reveal(fromLink); fromLink.scrollIntoView({ block: "start" }); }
+  spy();
+
+  if (!window.claude || !claude.use) {
+    statusEl.textContent = "Локальный просмотр — сохранение недоступно";
+    return;
+  }
+  claude.use("artifact").then(function (a) {
+    artifact = a;
+    if (!a) statusEl.textContent = "Сохранение здесь недоступно — откройте страницу по своей ссылке";
+    saveBtn.disabled = !dirty || !a;
+  });
+})();
+</script>
+
+</body>
+</html>
